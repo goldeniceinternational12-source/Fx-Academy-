@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MILMICH FX ACADEMY - Sign In</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gold: #d4af37;
+            --gold-light: #f4d03f;
+            --dark-bg: #0a0e1a;
+            --card-bg: rgba(15, 20, 35, 0.85);
+            --text-primary: #ffffff;
+            --text-secondary: #a0aec0;
+            --accent-blue: #2563eb;
+            --success: #10b981;
+            --border: rgba(212, 175, 55, 0.3);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--dark-bg);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Forex Chart Background */
+        .bg-charts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .chart-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, rgba(37, 99, 235, 0.3) 50%, transparent 100%);
+            animation: float 8s infinite ease-in-out;
+        }
+
+        .candlestick {
+            position: absolute;
+            width: 8px;
+            background: var(--success);
+            opacity: 0.15;
+            border-radius: 2px;
+        }
+
+        .candlestick.red {
+            background: #ef4444;
+        }
+
+        .candlestick::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            height: 20px;
+            background: inherit;
+            top: -10px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); opacity: 0.3; }
+            50% { transform: translateY(-20px); opacity: 0.6; }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
+        }
+
+        /* Main Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 480px;
+            padding: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        /* Logo Section */
+        .logo-section {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--dark-bg);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .company-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .company-sub {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        /* Step Indicator */
+        .steps-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .step-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .step-dot.active {
+            background: var(--gold);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+            transform: scale(1.2);
+        }
+
+        .step-dot.completed {
+            background: var(--success);
+        }
+
+        /* Form Elements */
+        .step-content {
+            display: none;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        .step-content.active {
+            display: block;
+        }
+
+        .step-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .step-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .input-group {
+            margin-bottom: 24px;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 16px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .input-field:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Code Input Boxes */
+        .code-inputs {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        .code-box {
+            width: 56px;
+            height: 64px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--gold);
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .code-box:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15);
+            transform: translateY(-2px);
+        }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+            border: none;
+            border-radius: 12px;
+            color: var(--dark-bg);
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            margin-top: 12px;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(212, 175, 55, 0.05);
+            color: var(--gold);
+        }
+
+        /* Delivery Options */
+        .delivery-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .option-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 18px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(212, 175, 55, 0.3);
+        }
+
+        .option-card.selected {
+            background: rgba(212, 175, 55, 0.08);
+            border-color: var(--gold);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
+        }
+
+        .option-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .whatsapp { background: rgba(37, 211, 102, 0.15); }
+        .email { background: rgba(37, 99, 235, 0.15); }
+        .sms { background: rgba(212, 175, 55, 0.15); }
+
+        .option-info h4 {
+            color: var(--text-primary);
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .option-info p {
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        .check-mark {
+            margin-left: auto;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .option-card.selected .check-mark {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: var(--dark-bg);
+        }
+
+        /* Purpose Cards */
+        .purpose-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .purpose-card {
+            padding: 24px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .purpose-card:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(212, 175, 55, 0.3);
+        }
+
+        .purpose-card.selected {
+            background: rgba(212, 175, 55, 0.08);
+            border-color: var(--gold);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.1);
+            transform: translateY(-4px);
+        }
+
+        .purpose-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .purpose-title {
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .purpose-desc {
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        /* Success Animation */
+        .success-check {
+            width: 80px;
+            height: 80px;
+            background: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            animation: pulse 2s infinite;
+        }
+
+        .success-check::after {
+            content: '✓';
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+        }
+
+        /* Educational floating elements */
+        .edu-float {
+            position: fixed;
+            font-size: 60px;
+            opacity: 0.03;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .edu-float:nth-child(1) { top: 10%; left: 5%; animation: float 10s infinite; }
+        .edu-float:nth-child(2) { top: 60%; right: 5%; animation: float 12s infinite 2s; }
+        .edu-float:nth-child(3) { bottom: 10%; left: 10%; animation: float 9s infinite 1s; }
+
+        /* Responsive Design */
+        @media (max-width: 640px) {
+            .container {
+                padding: 16px;
+                max-width: 100%;
+            }
+
+            .card {
+                padding: 32px 24px;
+                border-radius: 20px;
+            }
+
+            .company-name {
+                font-size: 20px;
+            }
+
+            .purpose-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .code-box {
+                width: 48px;
+                height: 56px;
+                font-size: 20px;
+            }
+
+            .logo {
+                width: 64px;
+                height: 64px;
+                font-size: 28px;
+            }
+        }
+
+        @media (min-width: 641px) and (max-width: 1024px) {
+            .container {
+                max-width: 520px;
+            }
+
+            .purpose-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (min-width: 1025px) {
+            .container {
+                max-width: 480px;
+            }
+
+            .bg-charts::before {
+                content: '';
+                position: absolute;
+                top: 20%;
+                left: 10%;
+                width: 300px;
+                height: 200px;
+                background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'%3E%3Cpath d='M0,150 Q50,100 100,120 T200,80 T300,60' fill='none' stroke='%232563eb' stroke-width='2' opacity='0.2'/%3E%3C/svg%3E") no-repeat;
+                opacity: 0.5;
+            }
+        }
+
+        /* Loading spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--dark-bg);
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Email display */
+        .email-display {
+            text-align: center;
+            padding: 12px;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: var(--gold);
+            font-weight: 500;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Elements -->
+    <div class="bg-charts" id="bgCharts"></div>
+    <div class="edu-float">📈</div>
+    <div class="edu-float">📊</div>
+    <div class="edu-float">💹</div>
+
+    <div class="container">
+        <div class="card">
+            
+            <!-- Logo (Always Visible) -->
+            <div class="logo-section">
+                <img src="./ChatGPT Image Jun 22, 2026, 12_54_21 PM.png" width="35%" height="35%"><br><br>
+                <div class="company-name">MILMICH FX ACADEMY</div>
+                <div class="company-sub">Master the Markets</div>
+            </div>
+
+            <!-- Step Indicators -->
+            <div class="steps-indicator">
+                <div class="step-dot active" data-step="1"></div>
+                <div class="step-dot" data-step="2"></div>
+                <div class="step-dot" data-step="3"></div>
+                <div class="step-dot" data-step="4"></div>
+            </div>
+
+            <!-- Step 1: Email Input -->
+            <div class="step-content active" id="step1">
+                <h2 class="step-title">Welcome Back</h2>
+                <p class="step-desc">Enter your email and password to access your trading account</p>
+                
+                <div class="input-group">
+                    <label class="input-label">Email Address</label>
+                    <input type="email" class="input-field" id="emailInput" placeholder="trader@milmichfx.com">
+                </div>
+                 <div class="input-group">
+                    <label class="input-label">Password</label>
+                    <input type="password" class="input-field" name="Password" placeholder="Password" required>
+                </div>
+                  
+                <button class="btn" id="btnStep1" onclick="goToStep(2)">Continue</button>
+            </div>
+
+            <!-- Step 2: Code Delivery Method -->
+            <div class="step-content" id="step2">
+                <h2 class="step-title">Get Verification Code</h2>
+                <p class="step-desc">Choose how you want to receive your access code</p>
+                
+                <div class="email-display" id="emailDisplay"></div>
+
+                <div class="delivery-options">
+                    <div class="option-card" onclick="selectDelivery(this, 'whatsapp')">
+                        <div class="option-icon whatsapp">💬</div>
+                        <div class="option-info">
+                            <h4>WhatsApp</h4>
+                            <p>Receive code via WhatsApp</p>
+                        </div>
+                        <div class="check-mark">✓</div>
+                    </div>
+
+                    <div class="option-card" onclick="selectDelivery(this, 'email')">
+                        <div class="option-icon email">✉️</div>
+                        <div class="option-info">
+                            <h4>Email</h4>
+                            <p>Receive code via email</p>
+                        </div>
+                        <div class="check-mark">✓</div>
+                    </div>
+
+                    <div class="option-card" onclick="selectDelivery(this, 'sms')">
+                        <div class="option-icon sms">📱</div>
+                        <div class="option-info">
+                            <h4>SMS</h4>
+                            <p>Receive code via text message</p>
+                        </div>
+                        <div class="check-mark">✓</div>
+                    </div>
+                </div>
+
+                <button class="btn" id="btnStep2" onclick="goToStep(3)" disabled>Continue</button>
+                <button class="btn btn-secondary" onclick="goToStep(1)">Back</button>
+            </div>
+
+            <!-- Step 3: Enter 5-Letter Code -->
+            <div class="step-content" id="step3">
+                <h2 class="step-title">Enter Code</h2>
+                <p class="step-desc">Enter the 5-letter code sent to your selected method</p>
+
+                <div class="code-inputs">
+                    <input type="text" class="code-box" maxlength="1" data-index="0">
+                    <input type="text" class="code-box" maxlength="1" data-index="1">
+                    <input type="text" class="code-box" maxlength="1" data-index="2">
+                    <input type="text" class="code-box" maxlength="1" data-index="3">
+                    <input type="text" class="code-box" maxlength="1" data-index="4">
+                </div>
+
+                <button class="btn" id="btnStep3" onclick="goToStep(4)">Continue</button>
+                <button class="btn btn-secondary" onclick="goToStep(2)">Back</button>
+                <p style="text-align: center; margin-top: 16px; font-size: 13px; color: var(--text-secondary);">
+                    Didn't receive it? <a href="#" style="color: var(--gold); text-decoration: none;" onclick="resendCode(event)">Resend Code</a>
+                </p>
+            </div>
+
+            <!-- Step 4: Purpose Selection -->
+            <div class="step-content" id="step4">
+                <h2 class="step-title">What brings you here?</h2>
+                <p class="step-desc">Select your primary goal at MILMICH FX ACADEMY</p>
+                  
+                <div class="purpose-grid">
+                    <a href="./buying materilas.html">
+                       <div class="purpose-card" onclick="selectPurpose(this, 'materials')">
+                        <div class="purpose-icon">📚</div>
+                        <div class="purpose-title">Buying Materials</div>
+                        <div class="purpose-desc">E-books, courses & tools</div>
+                    </div>
+                    </a>
+                    
+                     <a href="./signals.html">
+                       <div class="purpose-card" onclick="selectPurpose(this, 'signals')">
+                        <div class="purpose-icon">📡</div>
+                        <div class="purpose-title">Getting Signals</div>
+                        <div class="purpose-desc">Daily trading signals</div>
+                    </div>
+                     </a>
+                    
+                    <a href="./kyc.html">
+                       <div class="purpose-card" onclick="selectPurpose(this, 'training')">
+                        <div class="purpose-icon">🎓</div>
+                        <div class="purpose-title"> investment programs </div>
+                        <div class="purpose-desc">Come and change your trading recorrds</div>
+                    </div> 
+                    </a>
+                                           
+                         
+                  <a href="./mentoship.html">
+                      <div class="purpose-card" onclick="selectPurpose(this, 'mentorship')">
+                        <div class="purpose-icon">👨‍🏫</div>
+                        <div class="purpose-title">Mentorship</div>
+                        <div class="purpose-desc">1-on-1 expert guidance</div>
+                    </div>
+                  </a>
+                   
+                </div>
+
+                
+                <button class="btn btn-secondary" onclick="goToStep(3)">Back</button>
+            </div>
+
+            <!-- Success Screen -->
+            <div class="step-content" id="stepSuccess">
+                <div class="success-check"></div>
+                <h2 class="step-title">Welcome to MILMICH FX!</h2>
+                <p class="step-desc" id="successMessage">Redirecting you to your dashboard...</p>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // State management
+        let currentStep = 1;
+        let selectedDelivery = null;
+        let selectedPurpose = null;
+        let userEmail = '';
+
+        // Generate background candlesticks
+        function generateBackground() {
+            const container = document.getElementById('bgCharts');
+            const colors = ['var(--success)', '#ef4444'];
+            
+            for (let i = 0; i < 30; i++) {
+                const candle = document.createElement('div');
+                candle.className = 'candlestick';
+                if (Math.random() > 0.5) candle.classList.add('red');
+                
+                const height = Math.random() * 60 + 20;
+                const left = Math.random() * 95;
+                const top = Math.random() * 80 + 10;
+                
+                candle.style.height = height + 'px';
+                candle.style.left = left + '%';
+                candle.style.top = top + '%';
+                candle.style.animationDelay = (Math.random() * 5) + 's';
+                
+                container.appendChild(candle);
+            }
+
+            // Add chart lines
+            for (let i = 0; i < 5; i++) {
+                const line = document.createElement('div');
+                line.className = 'chart-line';
+                line.style.top = (20 + i * 15) + '%';
+                line.style.animationDelay = (i * 2) + 's';
+                container.appendChild(line);
+            }
+        }
+
+        // Step navigation
+        function goToStep(step) {
+            // Validation before proceeding
+            if (step === 2) {
+                const email = document.getElementById('emailInput').value.trim();
+                if (!email || !email.includes('@')) {
+                    shakeElement(document.getElementById('emailInput'));
+                    return;
+                }
+                userEmail = email;
+                document.getElementById('emailDisplay').textContent = email;
+            }
+
+            if (step === 3 && !selectedDelivery) {
+                return;
+            }
+
+            if (step === 4) {
+                const codeBoxes = document.querySelectorAll('.code-box');
+                let code = '';
+                codeBoxes.forEach(box => code += box.value);
+                if (code.length !== 5) {
+                    codeBoxes.forEach(box => {
+                        if (!box.value) shakeElement(box);
+                    });
+                    return;
+                }
+            }
+
+            // Hide all steps
+            document.querySelectorAll('.step-content').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            // Update dots
+            document.querySelectorAll('.step-dot').forEach((dot, index) => {
+                dot.classList.remove('active', 'completed');
+                if (index + 1 < step) dot.classList.add('completed');
+                if (index + 1 === step) dot.classList.add('active');
+            });
+
+            // Show target step
+            if (step <= 4) {
+                document.getElementById('step' + step).classList.add('active');
+                currentStep = step;
+            }
+
+            // Auto-focus logic
+            if (step === 3) {
+                setTimeout(() => {
+                    document.querySelector('.code-box[data-index="0"]').focus();
+                }, 300);
+            }
+        }
+
+        // Delivery selection
+        function selectDelivery(element, method) {
+            document.querySelectorAll('.option-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            selectedDelivery = method;
+            document.getElementById('btnStep2').disabled = false;
+        }
+
+        // Purpose selection
+        function selectPurpose(element, purpose) {
+            document.querySelectorAll('.purpose-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            selectedPurpose = purpose;
+            document.getElementById('btnStep4').disabled = false;
+        }
+
+        // Code input handling
+        const codeBoxes = document.querySelectorAll('.code-box');
+        codeBoxes.forEach((box, index) => {
+            box.addEventListener('input', function(e) {
+                this.value = this.value.toUpperCase();
+                if (this.value.length === 1 && index < 4) {
+                    codeBoxes[index + 1].focus();
+                }
+                checkCodeComplete();
+            });
+
+            box.addEventListener('keydown', function(e) {
+                if (e.key === 'Backspace' && this.value.length === 0 && index > 0) {
+                    codeBoxes[index - 1].focus();
+                }
+                if (e.key === 'ArrowLeft' && index > 0) {
+                    codeBoxes[index - 1].focus();
+                }
+                if (e.key === 'ArrowRight' && index < 4) {
+                    codeBoxes[index + 1].focus();
+                }
+            });
+
+            box.addEventListener('paste', function(e) {
+                e.preventDefault();
+                const paste = (e.clipboardData || window.clipboardData).getData('text');
+                const chars = paste.toUpperCase().split('').slice(0, 5);
+                chars.forEach((char, i) => {
+                    if (codeBoxes[i]) codeBoxes[i].value = char;
+                });
+                if (codeBoxes[chars.length]) {
+                    codeBoxes[chars.length].focus();
+                } else {
+                    codeBoxes[4].focus();
+                }
+                checkCodeComplete();
+            });
+        });
+
+        function checkCodeComplete() {
+            let complete = true;
+            codeBoxes.forEach(box => {
+                if (!box.value) complete = false;
+            });
+            document.getElementById('btnStep3').disabled = !complete;
+        }
+
+        // Resend code
+        function resendCode(e) {
+            e.preventDefault();
+            const link = e.target;
+            const originalText = link.textContent;
+            link.textContent = 'Code resent!';
+            link.style.color = 'var(--success)';
+            setTimeout(() => {
+                link.textContent = originalText;
+                link.style.color = 'var(--gold)';
+            }, 2000);
+        }
+
+        // Complete sign in
+        function completeSignIn() {
+            const purposes = {
+                'materials': 'Buying Materials',
+                'signals': 'Getting Signals',
+                'training': 'Training',
+                'mentorship': 'Mentorship'
+            };
+
+            document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.step-dot').forEach(dot => dot.classList.add('completed'));
+            document.getElementById('stepSuccess').classList.add('active');
+            
+            document.getElementById('successMessage').textContent = 
+                `You've selected ${purposes[selectedPurpose]}. Redirecting to your dashboard...`;
+
+            // Simulate redirect
+            setTimeout(() => {
+                // In real app: window.location.href = '/dashboard';
+                console.log('Redirecting...');
+            }, 3000);
+        }
+
+        // Utility: Shake animation for errors
+        function shakeElement(element) {
+            element.style.animation = 'none';
+            element.style.borderColor = '#ef4444';
+            setTimeout(() => {
+                element.style.animation = 'shake 0.5s ease-in-out';
+            }, 10);
+            setTimeout(() => {
+                element.style.borderColor = '';
+                element.style.animation = '';
+            }, 1000);
+        }
+
+        // Add shake keyframes dynamically
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-10px); }
+                75% { transform: translateX(10px); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Email input enter key support
+        document.getElementById('emailInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') goToStep(2);
+        });
+
+        // Initialize
+        generateBackground();
+        document.getElementById('btnStep3').disabled = true;
+    </script>
+</body>
+</html>

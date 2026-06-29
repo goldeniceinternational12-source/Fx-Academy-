@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MILMICH FX ACADEMY | Master the Markets</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        :root {
+            --gold: #d4af37;
+            --gold-light: #f4d03f;
+            --gold-dark: #b8960c;
+            --dark: #0a0e17;
+            --darker: #070a10;
+            --card: rgba(15, 23, 42, 0.7);
+            --card-border: rgba(212, 175, 55, 0.15);
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --glass: rgba(255, 255, 255, 0.03);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--darker);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* ===== ANIMATED BACKGROUND ===== */
+        .bg-forex {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .bg-forex::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse at 20% 50%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(37, 99, 235, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+        }
+
+        .candle {
+            position: absolute;
+            width: 6px;
+            border-radius: 2px;
+            opacity: 0.12;
+        }
+
+        .candle.green { background: var(--success); }
+        .candle.red { background: #ef4444; }
+
+        .candle::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            height: 16px;
+            background: inherit;
+            top: -8px;
+        }
+
+        .chart-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
+            width: 100%;
+            animation: drift 15s infinite linear;
+        }
+
+        @keyframes drift {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.2); }
+            50% { box-shadow: 0 0 40px rgba(212, 175, 55, 0.4); }
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* ===== NAVIGATION ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 16px 24px;
+            background: rgba(7, 10, 16, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--card-border);
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .nav-logo {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 20px;
+            color: var(--darker);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .nav-brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-brand-name {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: 1px;
+            line-height: 1.2;
+        }
+
+        .nav-brand-tag {
+            font-size: 10px;
+            color: var(--gold);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link {
+            padding: 8px 16px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--gold);
+            background: var(--glass);
+        }
+
+        .nav-cta-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 22px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            border: none;
+            font-family: inherit;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid var(--card-border);
+            color: var(--text);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+            color: var(--darker);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.25);
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.35);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 24px 80px;
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero-content {
+            animation: fadeUp 0.8s ease-out;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--card-border);
+            border-radius: 100px;
+            font-size: 13px;
+            color: var(--gold);
+            font-weight: 600;
+            margin-bottom: 24px;
+            letter-spacing: 0.5px;
+        }
+
+        .hero-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse-glow 2s infinite;
+        }
+
+        .hero-title {
+            font-size: 56px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .hero-title .highlight {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-desc {
+            font-size: 18px;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+            max-width: 480px;
+            line-height: 1.7;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .hero-cta .btn {
+            padding: 14px 32px;
+            font-size: 15px;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 32px;
+            margin-top: 48px;
+            padding-top: 32px;
+            border-top: 1px solid var(--card-border);
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--gold);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        /* Hero Visual */
+        .hero-visual {
+            position: relative;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero-logo-card {
+            position: relative;
+            width: 100%;
+            max-width: 480px;
+            aspect-ratio: 1;
+            margin: 0 auto;
+        }
+
+        .logo-ring {
+            position: absolute;
+            inset: 0;
+            border: 2px solid var(--card-border);
+            border-radius: 24px;
+            animation: pulse-glow 4s infinite;
+        }
+
+        .logo-ring:nth-child(2) {
+            inset: 20px;
+            border-color: rgba(212, 175, 55, 0.1);
+            animation-delay: 1s;
+        }
+
+        .logo-ring:nth-child(3) {
+            inset: 40px;
+            border-color: rgba(212, 175, 55, 0.05);
+            animation-delay: 2s;
+        }
+
+        .logo-main {
+            position: absolute;
+            inset: 60px;
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.6));
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .logo-main-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: 900;
+            color: var(--darker);
+            box-shadow: 0 20px 60px rgba(212, 175, 55, 0.3);
+        }
+
+        .logo-main-text {
+            text-align: center;
+        }
+
+        .logo-main-text h2 {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: var(--text);
+        }
+
+        .logo-main-text p {
+            font-size: 11px;
+            color: var(--gold);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .floating-badge {
+            position: absolute;
+            padding: 12px 18px;
+            background: var(--card);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: float 5s ease-in-out infinite;
+        }
+
+        .fb-1 { top: 10%; left: -10%; animation-delay: 0s; }
+        .fb-2 { bottom: 15%; right: -5%; animation-delay: 1.5s; }
+        .fb-3 { top: 50%; right: -15%; animation-delay: 3s; }
+
+        .fb-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        /* ===== SERVICES SECTION ===== */
+        .services {
+            position: relative;
+            z-index: 1;
+            padding: 100px 24px;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 60px;
+        }
+
+        .section-label {
+            display: inline-block;
+            padding: 6px 14px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--card-border);
+            border-radius: 100px;
+            font-size: 12px;
+            color: var(--gold);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 40px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .section-desc {
+            color: var(--text-muted);
+            font-size: 17px;
+            line-height: 1.7;
+        }
+
+        .services-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .service-card {
+            background: var(--card);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 36px 28px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-light));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(212, 175, 55, 0.3);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--card-border);
+        }
+
+        .service-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .service-card p {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .service-link {
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: gap 0.3s ease;
+        }
+
+        .service-link:hover {
+            gap: 10px;
+        }
+
+        /* ===== BROKERS SECTION ===== */
+        .brokers {
+            position: relative;
+            z-index: 1;
+            padding: 80px 24px;
+            background: linear-gradient(180deg, transparent, rgba(212, 175, 55, 0.03), transparent);
+        }
+
+        .brokers-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .brokers-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .broker-card {
+            background: var(--card);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 32px 24px;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .broker-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            border-color: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .broker-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        /* Broker-specific branding colors */
+        .broker-exness .broker-logo { 
+            background: linear-gradient(135deg, #ff0000, #cc0000); 
+            color: white;
+        }
+        .broker-deriv .broker-logo { 
+            background: linear-gradient(135deg, #ff4444, #cc2222); 
+            color: white;
+        }
+        .broker-fxtm .broker-logo { 
+            background: linear-gradient(135deg, #0066cc, #004499); 
+            color: white;
+        }
+        .broker-iqoption .broker-logo { 
+            background: linear-gradient(135deg, #00aa66, #008855); 
+            color: white;
+        }
+
+        .broker-card h4 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .broker-card p {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .broker-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ===== CTA SECTION ===== */
+        .cta-section {
+            position: relative;
+            z-index: 1;
+            padding: 100px 24px;
+        }
+
+        .cta-box {
+            max-width: 800px;
+            margin: 0 auto;
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.7));
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            animation: pulse-glow 6s infinite;
+        }
+
+        .cta-box h2 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .cta-box p {
+            color: var(--text-muted);
+            font-size: 17px;
+            margin-bottom: 32px;
+            position: relative;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        .cta-buttons .btn {
+            padding: 14px 36px;
+            font-size: 15px;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            position: relative;
+            z-index: 1;
+            padding: 60px 24px 30px;
+            border-top: 1px solid var(--card-border);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+        }
+
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .footer-brand .nav-logo {
+            width: 40px;
+            height: 40px;
+            font-size: 16px;
+        }
+
+        .footer-brand p {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.7;
+            max-width: 280px;
+        }
+
+        .footer-col h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .footer-col a {
+            display: block;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 12px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-col a:hover {
+            color: var(--gold);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 40px auto 0;
+            padding-top: 24px;
+            border-top: 1px solid var(--card-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 12px;
+        }
+
+        .footer-social a {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: var(--glass);
+            border: 1px solid var(--card-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .footer-social a:hover {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 48px;
+            }
+
+            .hero-title {
+                font-size: 44px;
+            }
+
+            .hero-desc {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-cta {
+                justify-content: center;
+            }
+
+            .hero-stats {
+                justify-content: center;
+            }
+
+            .hero-visual {
+                order: -1;
+                max-width: 400px;
+                margin: 0 auto;
+            }
+
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .brokers-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 12px 16px;
+            }
+
+            .nav-links, .nav-cta-group {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero {
+                padding: 100px 16px 60px;
+            }
+
+            .hero-title {
+                font-size: 32px;
+            }
+
+            .hero-desc {
+                font-size: 16px;
+            }
+
+            .hero-stats {
+                gap: 20px;
+            }
+
+            .stat-value {
+                font-size: 22px;
+            }
+
+            .hero-logo-card {
+                max-width: 300px;
+            }
+
+            .logo-main {
+                inset: 40px;
+            }
+
+            .logo-main-icon {
+                width: 70px;
+                height: 70px;
+                font-size: 32px;
+            }
+
+            .floating-badge {
+                display: none;
+            }
+
+            .services {
+                padding: 60px 16px;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .brokers-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-box {
+                padding: 40px 24px;
+            }
+
+            .cta-box h2 {
+                font-size: 26px;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .nav-links {
+                display: none;
+            }
+        }
+
+        /* Scroll reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background -->
+    <div class="bg-forex" id="bgForex"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-brand">
+                <img src="./ChatGPT Image Jun 22, 2026, 12_54_21 PM.png" width="7%" height="7%">
+                <div class="nav-brand-text">
+                    <span class="nav-brand-name">MILMICH FX</span>
+                    <span class="nav-brand-tag">Academy</span>
+                </div>
+            </a>
+            <div class="nav-links">
+                <a href="#services" class="nav-link">Services</a>
+                <a href="#brokers" class="nav-link">Brokers</a>
+                <a href="./About Us.html" class="nav-link">About</a>
+            </div>
+            <div class="nav-cta-group">
+                <a href="./sign in.html" class="btn btn-outline">Log In</a>
+                <a href="./sign up.html" class="btn btn-gold">Create Account</a>
+            </div>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">Live Market Access</div>
+                <h1 class="hero-title">
+                    Master Forex Trading with <span class="highlight">MILMICH FX ACADEMY</span>
+                </h1>
+                <p class="hero-desc">
+                    Join thousands of traders who have transformed their financial future. From daily signals to expert mentorship, we provide everything you need to conquer the markets.
+                </p>
+                <div class="hero-cta">
+                    <a href="./sign up.html" class="btn btn-gold">Get Started Free</a>
+                    <a href="#services" class="btn btn-outline">Explore Services</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-value">15K+</span>
+                        <span class="stat-label">Active Traders</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">98%</span>
+                        <span class="stat-label">Signal Accuracy</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">24/7</span>
+                        <span class="stat-label">Market Support</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-logo-card">
+                    <div class="logo-ring"></div>
+                    <div class="logo-ring"></div>
+                    <div class="logo-ring"></div>
+                    <div class="logo-main">
+                        <img src="./ChatGPT Image Jun 22, 2026, 12_54_21 PM.png" width="35%" height="35%">
+                        <div class="logo-main-text">
+                            <h2>MILMICH FX</h2>
+                            <p>Academy</p>
+                        </div>
+                    </div>
+                    <div class="floating-badge fb-1">
+                        <div class="fb-icon" style="background: rgba(16,185,129,0.2); color: var(--success);">📈</div>
+                        <span>Signals Active</span>
+                    </div>
+                    <div class="floating-badge fb-2">
+                        <div class="fb-icon" style="background: rgba(212,175,55,0.2); color: var(--gold);">🎓</div>
+                        <span>Mentorship Live</span>
+                    </div>
+                    <div class="floating-badge fb-3">
+                        <div class="fb-icon" style="background: rgba(37,99,235,0.2); color: #60a5fa;">📚</div>
+                        <span>Materials Ready</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="section-header reveal">
+            <span class="section-label">What We Offer</span>
+            <h2 class="section-title">Everything You Need to <span style="color: var(--gold);">Trade Successfully</span></h2>
+            <p class="section-desc">From real-time signals to comprehensive training materials, we equip you with professional-grade tools and knowledge.</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card reveal">
+                <div class="service-icon">📡</div>
+                <h3>Daily Signals</h3>
+                <p>Receive high-probability trade setups delivered straight to your device. Our analysts monitor the markets 24/7 to spot the best opportunities.</p>
+                <a href="./sign in.html" class="service-link">Learn More →</a>
+            </div>
+            <div class="service-card reveal">
+                <div class="service-icon">👨‍🏫</div>
+                <h3>Forex Mentorship</h3>
+                <p>Get personalized 1-on-1 guidance from seasoned traders. Build your strategy, manage risk, and develop the mindset of a professional.</p>
+                <a href="./sign in.html" class="service-link">Learn More →</a>
+            </div>
+            <div class="service-card reveal">
+                <div class="service-icon">🎓</div>
+                <h3>Forex Training</h3>
+                <p>Structured courses from beginner to advanced. Master technical analysis, fundamental analysis, and advanced chart patterns.</p>
+                <a href="./sign in.html" class="service-link">Learn More →</a>
+            </div>
+            <div class="service-card reveal">
+                <div class="service-icon">📚</div>
+                <h3>Trading Materials</h3>
+                <p>Premium e-books, video courses, templates, and proprietary indicators. Everything you need packaged for immediate application.</p>
+                <a href="./sign in.html" class="service-link">Learn More →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Brokers Section -->
+    <section class="brokers" id="brokers">
+        <div class="brokers-container">
+            <div class="section-header reveal">
+                <span class="section-label">Trusted Partners</span>
+                <h2 class="section-title">Recommended <span style="color: var(--gold);">Brokers</span></h2>
+                <p class="section-desc">We partner with the world's most reliable brokers to ensure you get the best trading conditions and security.</p>
+            </div>
+            <div class="brokers-grid">
+                <div class="broker-card broker-exness reveal">
+                    <div class="broker-logo">EXNESS</div>
+                    <h4>Exness</h4>
+                    <p>Ultra-low spreads from 0.0 pips with instant withdrawals and unlimited leverage options.</p>
+                    <span class="broker-tag">Recommended</span>
+                </div>
+                <div class="broker-card broker-deriv reveal">
+                    <div class="broker-logo">DERIV</div>
+                    <h4>Deriv</h4>
+                    <p>Innovative trading platform with synthetic indices, multipliers, and classic forex pairs.</p>
+                    <span class="broker-tag">Popular</span>
+                </div>
+                <div class="broker-card broker-fxtm reveal">
+                    <div class="broker-logo">FXTM</div>
+                    <h4>FXTM</h4>
+                    <p>Regulated globally with superior execution speeds and comprehensive educational resources.</p>
+                    <span class="broker-tag">Trusted</span>
+                </div>
+                <div class="broker-card broker-iqoption reveal">
+                    <div class="broker-logo">IQ OPTION</div>
+                    <h4>IQ Option</h4>
+                    <p>User-friendly platform perfect for beginners with a wide range of assets and tools.</p>
+                    <span class="broker-tag">Beginner Friendly</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-box reveal">
+            <h2>Start Your Trading Journey Today</h2>
+            <p>Join MILMICH FX ACADEMY and get access to premium signals, expert mentorship, and world-class training materials.</p>
+            <div class="cta-buttons">
+                <a href="./sign up.html" class="btn btn-gold">Create Free Account</a>
+                <a href="./sign in.html" class="btn btn-outline">Log In</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <img src="./ChatGPT Image Jun 22, 2026, 12_54_21 PM.png" width="40%" height="40%">
+                    <div>
+                        <div style="font-weight: 800; font-size: 16px;">MILMICH FX</div>
+                        <div style="font-size: 10px; color: var(--gold); letter-spacing: 2px;">ACADEMY</div>
+                    </div>
+                </div>
+                <p>Empowering traders worldwide with professional signals, mentorship, and educational resources since 2020.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Services</h4>
+                <a href="./sign in.html">Daily Signals</a>
+                <a href="./sign in.html">Mentorship</a>
+                <a href="./sign in.html">Training</a>
+                <a href="./sign in.html">Materials</a>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <a href="./About Us.html">About Us</a>
+                
+                <a href="./Contact.html">Contact</a>
+                
+            </div>
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <a href="./privacy policy.html">Privacy Policy</a>
+                <a href="./terms of service.html">Terms of Service</a>
+                <a href="./Risk Disclosure.html">Risk Disclosure</a>
+                <a href="./Cookie Policy.html">Cookie Policy</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 MILMICH FX ACADEMY. All rights reserved.</span>
+            
+        </div>
+    </footer>
+
+    <script>
+        // Generate background candlesticks
+        function generateBackground() {
+            const container = document.getElementById('bgForex');
+            const colors = ['green', 'red'];
+            
+            for (let i = 0; i < 40; i++) {
+                const candle = document.createElement('div');
+                candle.className = `candle ${colors[Math.floor(Math.random() * colors.length)]}`;
+                const height = Math.random() * 50 + 15;
+                candle.style.height = height + 'px';
+                candle.style.left = Math.random() * 100 + '%';
+                candle.style.top = Math.random() * 90 + '%';
+                candle.style.opacity = Math.random() * 0.08 + 0.04;
+                container.appendChild(candle);
+            }
+
+            for (let i = 0; i < 4; i++) {
+                const line = document.createElement('div');
+                line.className = 'chart-line';
+                line.style.top = (15 + i * 20) + '%';
+                line.style.animationDuration = (10 + i * 5) + 's';
+                line.style.animationDelay = (i * 2) + 's';
+                container.appendChild(line);
+            }
+        }
+
+        // Scroll reveal animation
+        function initScrollReveal() {
+            const reveals = document.querySelectorAll('.reveal');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            reveals.forEach(el => observer.observe(el));
+        }
+
+        // Navbar scroll effect
+        function initNavbarScroll() {
+            const navbar = document.querySelector('.navbar');
+            let lastScroll = 0;
+
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.pageYOffset;
+                
+                if (currentScroll > 50) {
+                    navbar.style.background = 'rgba(7, 10, 16, 0.95)';
+                    navbar.style.boxShadow = '0 4px 30px rgba(0,0,0,0.3)';
+                } else {
+                    navbar.style.background = 'rgba(7, 10, 16, 0.85)';
+                    navbar.style.boxShadow = 'none';
+                }
+                
+                lastScroll = currentScroll;
+            });
+        }
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            const navCtas = document.querySelector('.nav-cta-group');
+            
+            if (navLinks.style.display === 'flex') {
+                navLinks.style.display = 'none';
+                navCtas.style.display = 'none';
+            } else {
+                navLinks.style.display = 'flex';
+                navLinks.style.flexDirection = 'column';
+                navLinks.style.position = 'absolute';
+                navLinks.style.top = '70px';
+                navLinks.style.left = '16px';
+                navLinks.style.right = '16px';
+                navLinks.style.background = 'rgba(7, 10, 16, 0.98)';
+                navLinks.style.padding = '20px';
+                navLinks.style.borderRadius = '16px';
+                navLinks.style.border = '1px solid var(--card-border)';
+                navLinks.style.backdropFilter = 'blur(20px)';
+                navLinks.style.zIndex = '999';
+                
+                navCtas.style.display = 'flex';
+                navCtas.style.flexDirection = 'column';
+                navCtas.style.position = 'absolute';
+                navCtas.style.top = '200px';
+                navCtas.style.left = '16px';
+                navCtas.style.right = '16px';
+                navCtas.style.zIndex = '999';
+            }
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Initialize
+        generateBackground();
+        initScrollReveal();
+        initNavbarScroll();
+    </script>
+</body>
+</html>

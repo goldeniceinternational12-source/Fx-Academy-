@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MILMICH FX ACADEMY - Premium Forex Signals</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0a192f;
+            --secondary: #112240;
+            --accent: #64ffda;
+            --gold: #ffd700;
+            --text: #ccd6f6;
+            --text-light: #8892b0;
+            --white: #e6f1ff;
+            --danger: #ff6b6b;
+            --success: #4ecdc4;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--primary);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 25, 47, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 5%;
+            border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .logo img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent);
+        }
+
+        .logo-placeholder {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--gold));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.2rem;
+            border: 2px solid var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--accent);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 80px;
+            padding: 4rem 5%;
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at 50% 50%, rgba(17, 34, 64, 0.8) 0%, rgba(10, 25, 47, 1) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(100, 255, 218, 0.03) 10px,
+                rgba(100, 255, 218, 0.03) 20px
+            );
+            animation: moveGrid 20s linear infinite;
+        }
+
+        @keyframes moveGrid {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-text h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-text .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: var(--secondary);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid rgba(100, 255, 218, 0.1);
+            text-align: center;
+            min-width: 150px;
+            transition: transform 0.3s;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 0.5rem;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+        }
+
+        .btn-primary:hover {
+            background: rgba(100, 255, 218, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(100, 255, 218, 0.2);
+        }
+
+        .btn-whatsapp {
+            background: #25d366;
+            color: white;
+            border: 1px solid #25d366;
+        }
+
+        .btn-whatsapp:hover {
+            background: #128c7e;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        .btn-telegram {
+            background: #0088cc;
+            color: white;
+            border: 1px solid #0088cc;
+        }
+
+        .btn-telegram:hover {
+            background: #006699;
+            transform: translateY(-2px);
+        }
+
+        .hero-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-card {
+            background: var(--secondary);
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--gold));
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .signal-badge {
+            background: rgba(78, 205, 196, 0.2);
+            color: var(--success);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .pulse {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .signal-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(100, 255, 218, 0.05);
+        }
+
+        .signal-row:last-child {
+            border-bottom: none;
+        }
+
+        .signal-pair {
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        .signal-value {
+            color: var(--accent);
+            font-family: monospace;
+        }
+
+        .signal-profit {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        /* Sections General */
+        section {
+            padding: 4rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--white);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Pricing Section */
+        .pricing {
+            background: var(--secondary);
+            padding: 4rem 5%;
+        }
+
+        .pricing-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: var(--primary);
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            border-radius: 15px;
+            padding: 3rem 2rem;
+            text-align: center;
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+
+        .pricing-card::before {
+            content: 'RECOMMENDED';
+            position: absolute;
+            top: 20px;
+            right: -35px;
+            background: var(--accent);
+            color: var(--primary);
+            padding: 0.3rem 3rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            transform: rotate(45deg);
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin: 1rem 0;
+        }
+
+        .price span {
+            font-size: 1rem;
+            color: var(--text-light);
+        }
+
+        .pricing-features {
+            list-style: none;
+            text-align: left;
+            margin: 2rem 0;
+        }
+
+        .pricing-features li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(100, 255, 218, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .pricing-features li i {
+            color: var(--accent);
+        }
+
+        /* How It Works */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .step-card {
+            background: var(--secondary);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid rgba(100, 255, 218, 0.1);
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .step-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--accent), var(--gold));
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 0 auto 1rem;
+        }
+
+        .step-card h3 {
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+
+        .step-card p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Payment Section */
+        .payment-section {
+            background: var(--secondary);
+            padding: 4rem 5%;
+        }
+
+        .payment-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .payment-info {
+            background: var(--primary);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 107, 107, 0.3);
+        }
+
+        .warning-box {
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid var(--danger);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .warning-box h4 {
+            color: var(--danger);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .payment-form {
+            background: var(--primary);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid rgba(100, 255, 218, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--secondary);
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            border-radius: 5px;
+            color: var(--white);
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .file-upload {
+            border: 2px dashed rgba(100, 255, 218, 0.3);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-upload:hover {
+            border-color: var(--accent);
+            background: rgba(100, 255, 218, 0.05);
+        }
+
+        .file-upload i {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Contact Section */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .contact-card {
+            background: var(--secondary);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid rgba(100, 255, 218, 0.1);
+            text-align: center;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .contact-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(100, 255, 218, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+
+        .contact-card h3 {
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-card p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Chatbot Widget */
+        .chatbot-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .chatbot-toggle {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #25d366, #128c7e);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4);
+            border: none;
+            transition: transform 0.3s;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .chatbot-toggle:hover {
+            transform: scale(1.1);
+            animation: none;
+        }
+
+        .chatbot-window {
+            position: absolute;
+            bottom: 75px;
+            right: 0;
+            width: 350px;
+            height: 450px;
+            background: var(--secondary);
+            border-radius: 15px;
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chatbot-window.active {
+            display: flex;
+        }
+
+        .chatbot-header {
+            background: linear-gradient(135deg, #25d366, #128c7e);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: white;
+        }
+
+        .chatbot-header img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        .chatbot-header-info h4 {
+            font-size: 0.95rem;
+        }
+
+        .chatbot-header-info span {
+            font-size: 0.75rem;
+            opacity: 0.9;
+        }
+
+        .chatbot-close {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 0.8rem 1rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .message-bot {
+            background: rgba(100, 255, 218, 0.1);
+            color: var(--text);
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+
+        .message-user {
+            background: #25d366;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+
+        .chatbot-input {
+            padding: 1rem;
+            border-top: 1px solid rgba(100, 255, 218, 0.1);
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            padding: 0.8rem;
+            border-radius: 25px;
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            background: var(--primary);
+            color: var(--white);
+            outline: none;
+        }
+
+        .chatbot-input button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #25d366;
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary);
+            padding: 2rem 5%;
+            text-align: center;
+            border-top: 1px solid rgba(100, 255, 218, 0.1);
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .footer-copy {
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--secondary);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            z-index: 10000;
+            opacity: 0;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .stats-bar {
+                justify-content: center;
+            }
+
+            .cta-group {
+                justify-content: center;
+            }
+
+            .hero-image {
+                order: -1;
+            }
+
+            .payment-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--secondary);
+                flex-direction: column;
+                padding: 1rem;
+                gap: 1rem;
+                border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero-text h1 {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .price {
+                font-size: 2.5rem;
+            }
+
+            .chatbot-window {
+                width: 300px;
+                height: 400px;
+                right: -10px;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 2rem 3%;
+                min-height: auto;
+            }
+
+            .hero-text h1 {
+                font-size: 1.6rem;
+            }
+
+            .stat-item {
+                min-width: 120px;
+                padding: 1rem;
+            }
+
+            .stat-number {
+                font-size: 1.5rem;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .cta-group {
+                width: 100%;
+            }
+
+            .pricing-card::before {
+                font-size: 0.65rem;
+                padding: 0.2rem 2.5rem;
+            }
+
+            .chatbot-window {
+                width: calc(100vw - 40px);
+                right: 0;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">
+                 <img src="./ChatGPT Image Jun 22, 2026, 12_54_21 PM.png" width="6%" height="6%">
+                <span>MILMICH FX</span>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="./index.html">Home</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#payment">Payment</a></li>
+                <li><a href="./Contact.html">Contact</a></li>
+            </ul>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>MILMICH FX ACADEMY</h1>
+                <p class="subtitle">We are here to make your financial conditions very stable. From our records, we maintain an <strong>85% successful trade rate</strong> and we are dedicated to helping students who are struggling to make money in forex.</p>
+                
+                <div class="stats-bar">
+                    <div class="stat-item">
+                        <span class="stat-number">85%</span>
+                        <span class="stat-label">Success Rate</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">Daily</span>
+                        <span class="stat-label">Signals</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">24/7</span>
+                        <span class="stat-label">Support</span>
+                    </div>
+                </div>
+
+                <div class="cta-group">
+                    <a href="https://wa.me/2348108436487" target="_blank" class="btn btn-whatsapp">
+                        <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+                    </a>
+                    <a href="https://t.me/MILMICHFXA" target="_blank" class="btn btn-telegram">
+                        <i class="fab fa-telegram"></i> Join Telegram
+                    </a>
+                    <a href="#payment" class="btn btn-primary">
+                        <i class="fas fa-rocket"></i> Get Started
+                    </a>
+                </div>
+            </div>
+
+            <div class="hero-image">
+                <div class="hero-card">
+                    <div class="card-header">
+                        <span style="color: var(--white); font-weight: 600;">Live Signals</span>
+                        <span class="signal-badge"><span class="pulse"></span> ACTIVE</span>
+                    </div>
+                    <div class="signal-row">
+                        <span class="signal-pair">EUR/USD</span>
+                        <span class="signal-value">BUY @ 1.0845</span>
+                        <span class="signal-profit">+120 pips</span>
+                    </div>
+                    <div class="signal-row">
+                        <span class="signal-pair">GBP/USD</span>
+                        <span class="signal-value">SELL @ 1.2650</span>
+                        <span class="signal-profit">+85 pips</span>
+                    </div>
+                    <div class="signal-row">
+                        <span class="signal-pair">USD/JPY</span>
+                        <span class="signal-value">BUY @ 149.20</span>
+                        <span class="signal-profit">+150 pips</span>
+                    </div>
+                    <div class="signal-row">
+                        <span class="signal-pair">XAU/USD</span>
+                        <span class="signal-value">BUY @ 2035.00</span>
+                        <span class="signal-profit">+200 pips</span>
+                    </div>
+                    <div class="signal-row">
+                        <span class="signal-pair">BTC/USD</span>
+                        <span class="signal-value">HOLD</span>
+                        <span class="signal-profit" style="color: var(--gold);">Running</span>
+                    </div>
+                    <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(100,255,218,0.1); text-align: center; font-size: 0.8rem; color: var(--text-light);">
+                        <i class="fas fa-clock" style="color: var(--accent);"></i> Updated few seconds ago
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="pricing-container">
+            <h2 class="section-title">Signal Pricing</h2>
+            <p class="section-subtitle">Invest in your financial future with our premium forex signals</p>
+            
+            <div class="pricing-card">
+                <h3 style="color: var(--white); font-size: 1.3rem;">Premium Signals Package</h3>
+                <div class="price">$70 <span>/ monthly</span></div>
+                <p style="color: var(--text-light); margin-bottom: 1.5rem;">Full access to daily signals & trade guidance</p>
+                
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check-circle"></i> Daily Forex Signals (3-5 per day)</li>
+                    <li><i class="fas fa-check-circle"></i> Entry, Stop Loss & Take Profit Levels</li>
+                    <li><i class="fas fa-check-circle"></i> Gold (XAU/USD) Signals Included</li>
+                    <li><i class="fas fa-check-circle"></i> Crypto Signals Included</li>
+                    <li><i class="fas fa-check-circle"></i> Step-by-Step Trade Placement Guide</li>
+                    <li><i class="fas fa-check-circle"></i> Risk Management Strategies</li>
+                    <li><i class="fas fa-check-circle"></i> 24/7 WhatsApp Support</li>
+                    <li><i class="fas fa-check-circle"></i> Access to Private Telegram Channel</li>
+                </ul>
+                
+                <a href="#payment" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                    <i class="fas fa-credit-card"></i> Subscribe Now
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works">
+        <h2 class="section-title">How It Works</h2>
+        <p class="section-subtitle">Get started in 4 simple steps and begin your journey to profitable trading</p>
+        
+        <div class="steps">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3>Email Us</h3>
+                <p>Send us an email to get started. We will provide you with the crypto account details for payment and answer any questions you have.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3>Make Payment</h3>
+                <p>Pay the $70 monthly fee to the crypto account provided. Double-check all digits to avoid mistakes or misplaced numbers.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3>Submit Proof</h3>
+                <p>Upload your proof of payment using the form below. Your payment will be processed and verified within 2-3 hours.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">4</div>
+                <h3>Receive Signals</h3>
+                <p>Once confirmed, you will receive daily signals via our exclusive Telegram channel @MILMICHFXA with full trade guidance.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Payment Section -->
+    <section class="payment-section" id="payment">
+        <div class="payment-container">
+            <div class="payment-info">
+                <h2 style="color: var(--white); margin-bottom: 1.5rem;">
+                    <i class="fas fa-shield-alt" style="color: var(--accent);"></i> Payment Instructions
+                </h2>
+                
+                <div class="warning-box">
+                    <h4><i class="fas fa-exclamation-triangle"></i> Important Warning</h4>
+                    <p>Please do not make mistakes in your payment or misplace some digits. Crypto transactions are irreversible. Always verify the wallet address carefully before sending funds.</p>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <h4 style="color: var(--accent); margin-bottom: 0.8rem;">Step 1: Contact Us</h4>
+                    <p style="color: var(--text-light); margin-bottom: 1rem;">Email us to get started and receive the crypto account/wallet address for your payment.</p>
+                    <a href="mailto:milmichfxacademy@gmail.com" class="btn btn-primary" style="margin-bottom: 1rem;">
+                        <i class="fas fa-envelope"></i> Email Us Now
+                    </a>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <h4 style="color: var(--accent); margin-bottom: 0.8rem;">Step 2: Processing Time</h4>
+                    <p style="color: var(--text-light);"><i class="fas fa-clock" style="color: var(--gold);"></i> Your payment will be processed and verified within <strong style="color: var(--white);">2-3 hours</strong> after payment has been made.</p>
+                </div>
+
+                <div>
+                    <h4 style="color: var(--accent); margin-bottom: 0.8rem;">Step 3: Daily Signals</h4>
+                    <p style="color: var(--text-light);">After confirmation, join our Telegram channel for daily signals:</p>
+                    <a href="https://t.me/MILMICHFXA" target="_blank" class="btn btn-telegram" style="margin-top: 1rem;">
+                        <i class="fab fa-telegram"></i> @MILMICHFXA
+                    </a>
+                </div>
+            </div>
+
+            <div class="payment-form">
+                <h3 style="color: var(--white); margin-bottom: 0.5rem;">Submit Proof of Payment</h3>
+                <p style="color: var(--text-light); font-size: 0.9rem; margin-bottom: 1.5rem;">Fill the form below to submit your payment proof. We will verify and activate your account within 2-3 hours.</p>
+                
+                <form id="paymentForm">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" placeholder="Enter your email address" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>WhatsApp Number</label>
+                        <input type="tel" placeholder="e.g. 08108436487" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Transaction ID / Hash</label>
+                        <input type="text" placeholder="Enter crypto transaction ID" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Amount Sent</label>
+                        <input type="text" placeholder="e.g. $70 USDT" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Screenshot / Proof of Payment</label>
+                        <div class="file-upload" id="fileUpload">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p style="margin-top: 0.5rem; color: var(--text-light);">Click to upload screenshot</p>
+                            <input type="file" id="fileInput" accept="image/*" style="display: none;" required>
+                        </div>
+                        <p id="fileName" style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--accent);"></p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Additional Message (Optional)</label>
+                        <textarea placeholder="Any extra information..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                        <i class="fas fa-paper-plane"></i> Submit Payment Proof
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2 class="section-title">Get In Touch</h2>
+        <p class="section-subtitle">Reach out to us through any of these channels. We are here to help you succeed.</p>
+        
+        <div class="contact-grid">
+            <a href="https://wa.me/2348108436487" target="_blank" class="contact-card">
+                <div class="contact-icon" style="background: rgba(37, 211, 102, 0.1); color: #25d366;">
+                    <i class="fab fa-whatsapp"></i>
+                </div>
+                <h3>WhatsApp</h3>
+                <p>Chat with our support team on WhatsApp for instant responses and signal inquiries.</p>
+                <p style="margin-top: 1rem; color: var(--accent); font-weight: 600;">08108436487</p>
+            </a>
+            
+            <a href="https://t.me/MILMICHFXA" target="_blank" class="contact-card">
+                <div class="contact-icon" style="background: rgba(0, 136, 204, 0.1); color: #0088cc;">
+                    <i class="fab fa-telegram"></i>
+                </div>
+                <h3>Telegram</h3>
+                <p>Join our Telegram channel for daily signals and market updates.</p>
+                <p style="margin-top: 1rem; color: var(--accent); font-weight: 600;">@MILMICHFXA</p>
+            </a>
+            
+            <a href="mailto:milmichfxacademy@gmail.com" class="contact-card">
+                <div class="contact-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <h3>Email Us</h3>
+                <p>Send us an email to get started and receive crypto payment details.</p>
+                <p style="margin-top: 1rem; color: var(--accent); font-weight: 600;">milmichfxacademy@gmail.com</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">MILMICH FX ACADEMY</div>
+            <div class="footer-links">
+                <a href="#home">Home</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#payment">Payment</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <p class="footer-copy">
+                 MILMICH FX ACADEMY. All rights reserved. <br>
+                <span style="color: var(--text-light); font-size: 0.8rem;">Forex trading involves risk. Past performance does not guarantee future results.</span>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Chatbot Widget -->
+    <div class="chatbot-widget">
+        <div class="chatbot-window" id="chatbotWindow">
+            <div class="chatbot-header">
+                <div style="width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #128c7e; font-weight: bold; font-size: 1.2rem;">M</div>
+                <div class="chatbot-header-info">
+                    <h4>MILMICH FX Support</h4>
+                    <span>Online now</span>
+                </div>
+                <button class="chatbot-close" id="chatbotClose">&times;</button>
+            </div>
+            <div class="chatbot-messages" id="chatbotMessages">
+                <div class="message message-bot">
+                    Hello! Welcome to MILMICH FX ACADEMY. How can I help you today? You can ask about our signals, pricing, or how to get started.
+                </div>
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="chatbotInput" placeholder="Type a message...">
+                <button id="chatbotSend"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+        <button class="chatbot-toggle" id="chatbotToggle">
+            <i class="fab fa-whatsapp"></i>
+        </button>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">Message sent successfully!</div>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = mobileMenuBtn.querySelector('i');
+            if (navLinks.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileMenuBtn.querySelector('i').classList.remove('fa-times');
+                mobileMenuBtn.querySelector('i').classList.add('fa-bars');
+            });
+        });
+
+        // Chatbot Toggle
+        const chatbotToggle = document.getElementById('chatbotToggle');
+        const chatbotWindow = document.getElementById('chatbotWindow');
+        const chatbotClose = document.getElementById('chatbotClose');
+        
+        chatbotToggle.addEventListener('click', () => {
+            chatbotWindow.classList.toggle('active');
+        });
+        
+        chatbotClose.addEventListener('click', () => {
+            chatbotWindow.classList.remove('active');
+        });
+
+        // Chatbot Functionality
+        const chatbotInput = document.getElementById('chatbotInput');
+        const chatbotSend = document.getElementById('chatbotSend');
+        const chatbotMessages = document.getElementById('chatbotMessages');
+
+        const botResponses = {
+            'hello': 'Hello! Welcome to MILMICH FX ACADEMY. We offer premium forex signals with an 85% success rate. How can I assist you today?',
+            'hi': 'Hi there! Ready to improve your trading? Ask me about our signals or pricing.',
+            'price': 'Our premium signal package is $70 per month. This includes daily signals, trade guidance, and access to our private Telegram channel @MILMICHFXA.',
+            'cost': 'The monthly fee for our signals is $70. This gives you full access to daily forex and crypto signals with complete entry and exit guidance.',
+            'payment': 'To get started, email us to receive the crypto account details. After payment, submit your proof using the form on our website. Processing takes 2-3 hours.',
+            'crypto': 'We accept crypto payments. Email us to get the current wallet address. Please do not make mistakes in the address or misplace digits!',
+            'telegram': 'Join our Telegram channel @MILMICHFXA for daily signals. You will receive the link after payment confirmation.',
+            'whatsapp': 'You can reach us on WhatsApp at 08108436487 for instant support and inquiries.',
+            'email': 'Please email us to get started and receive payment details. We will guide you through the entire process.',
+            'signals': 'We provide 3-5 high-quality signals daily covering Forex pairs, Gold (XAU/USD), and Crypto. Each signal includes entry price, stop loss, and take profit levels.',
+            'success': 'We are proud of our 85% successful trade record. Our signals are carefully analyzed before being sent to our members.',
+            'help': 'I can help you with: pricing ($70/month), payment process, signal details, or connecting you via WhatsApp 08108436487. What do you need?',
+            'start': 'To get started: 1) Email us for payment details, 2) Make payment to the crypto account provided, 3) Submit proof, 4) Receive daily signals on Telegram @MILMICHFXA.'
+        };
+
+        function addMessage(text, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'message-user' : 'message-bot'}`;
+            messageDiv.textContent = text;
+            chatbotMessages.appendChild(messageDiv);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+
+        function handleChat() {
+            const text = chatbotInput.value.trim();
+            if (!text) return;
+            
+            addMessage(text, true);
+            chatbotInput.value = '';
+            
+            setTimeout(() => {
+                const lowerText = text.toLowerCase();
+                let response = "I'm not sure about that. For detailed help, please WhatsApp us at 08108436487 or email us. You can also ask about pricing, signals, or how to get started.";
+                
+                for (const [key, value] of Object.entries(botResponses)) {
+                    if (lowerText.includes(key)) {
+                        response = value;
+                        break;
+                    }
+                }
+                
+                addMessage(response);
+            }, 500);
+        }
+
+        chatbotSend.addEventListener('click', handleChat);
+        chatbotInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleChat();
+        });
+
+        // File Upload
+        const fileUpload = document.getElementById('fileUpload');
+        const fileInput = document.getElementById('fileInput');
+        const fileName = document.getElementById('fileName');
+
+        fileUpload.addEventListener('click', () => fileInput.click());
+        
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                fileName.textContent = `Selected: ${e.target.files[0].name}`;
+                fileUpload.style.borderColor = 'var(--accent)';
+            }
+        });
+
+        // Payment Form
+        const paymentForm = document.getElementById('paymentForm');
+        const toast = document.getElementById('toast');
+
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        paymentForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            showToast('Payment proof submitted successfully! We will verify within 2-3 hours.');
+            paymentForm.reset();
+            fileName.textContent = '';
+            fileUpload.style.borderColor = 'rgba(100, 255, 218, 0.3)';
+        });
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.style.boxShadow = '0 5px 20px rgba(0,0,0,0.3)';
+            } else {
+                nav.style.boxShadow = 'none';
+            }
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Live Signal Animation (simulate updates)
+        setInterval(() => {
+            const profits = document.querySelectorAll('.signal-profit');
+            const values = ['+120 pips', '+85 pips', '+150 pips', '+200 pips', '+95 pips', '+180 pips'];
+            profits.forEach((p, i) => {
+                if (p.textContent.includes('pips') && Math.random() > 0.7) {
+                    p.style.opacity = '0';
+                    setTimeout(() => {
+                        p.textContent = values[Math.floor(Math.random() * values.length)];
+                        p.style.opacity = '1';
+                    }, 300);
+                }
+            });
+        }, 5000);
+    </script>
+</body>
+</html>
