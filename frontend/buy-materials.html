@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Buy Materials</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      width: 400px;
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #1e293b;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    textarea {
+      resize: none;
+      height: 100px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+
+    .message {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .success {
+      color: green;
+    }
+
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h2>Buy Materials</h2>
+
+    <input type="text" id="name" placeholder="Your Name" required />
+    <input type="email" id="email" placeholder="Your Email" required />
+    <textarea id="request" placeholder="What book/material do you want?" required></textarea>
+
+    <button onclick="submitRequest()">Submit Request</button>
+
+    <div class="message" id="message"></div>
+  </div>
+
+  <script>
+    async function submitRequest() {
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const request = document.getElementById("request").value;
+      const message = document.getElementById("message");
+
+      if (!name || !email || !request) {
+        message.textContent = "All fields are required!";
+        message.className = "message error";
+        return;
+      }
+
+      try {
+        const res = await fetch("https://fx-academy-backend.onrender.com/api/material-request", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ name, email, request })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          message.textContent = "Request sent successfully!";
+          message.className = "message success";
+
+          document.getElementById("name").value = "";
+          document.getElementById("email").value = "";
+          document.getElementById("request").value = "";
+        } else {
+          message.textContent = data.message || "Something went wrong!";
+          message.className = "message error";
+        }
+
+      } catch (err) {
+        message.textContent = "Server error. Try again later.";
+        message.className = "message error";
+      }
+    }
+  </script>
+
+</body>
+</html>

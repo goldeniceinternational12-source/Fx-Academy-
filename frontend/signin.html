@@ -598,11 +598,10 @@
                     <input type="email" class="input-field" id="emailInput" placeholder="trader@milmichfx.com">
                 </div>
                  <div class="input-group">
-                    <label class="input-label">Password</label>
-                    <input type="password" class="input-field" name="Password" placeholder="Password" required>
+                    <input type="password" class="input-field" id="passwordInput" placeholder="Password" required>
                 </div>
                   
-                <button class="btn" id="btnStep1" onclick="goToStep(2)">Continue</button>
+                <button class="btn" id="btnStep1" onclick="loginUser()">Continue</button>
             </div>
 
             <!-- Step 2: Code Delivery Method -->
@@ -949,6 +948,52 @@
         // Initialize
         generateBackground();
         document.getElementById('btnStep3').disabled = true;
+   async function loginUser() {
+    const email = document.getElementById("emailInput").value.trim();
+    const password = document.getElementById("passwordInput").value.trim();
+
+    if (!email || !password) {
+        alert("Please enter email and password");
+        return;
+    }
+
+    try {
+        const res = await fetch("https://fx-academy-backend.onrender.com/api/auth/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ email, password })
+        });
+
+        const data = await res.json();
+
+        console.log("Login response:", data);
+
+        if (!res.ok) {
+            alert(data.message || "Login failed");
+            return;
+        }
+
+        if (!data.token) {
+            alert("No token received from server");
+            return;
+        }
+
+        // ✅ SAVE TOKEN (this is what your user.js uses)
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+
+        alert("Login successful!");
+
+        // go to next step in your UI (NOT dashboard yet)
+        goToStep(2);
+
+    } catch (err) {
+        console.error(err);
+        alert("Server error. Try again.");
+    }
+}
     </script>
 </body>
 </html>

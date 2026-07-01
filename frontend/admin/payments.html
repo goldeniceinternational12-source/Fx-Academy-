@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Payment Proofs</title>
+
+<style>
+body{margin:0;font-family:Arial;background:#f4f6f9}
+header{background:#13294b;color:#fff;padding:18px}
+.container{padding:20px}
+
+table{width:100%;border-collapse:collapse;background:#fff}
+th,td{padding:12px;border:1px solid #ddd}
+th{background:#13294b;color:#fff}
+
+button{padding:8px 12px;border:none;border-radius:4px;color:#fff;cursor:pointer;margin-right:5px}
+.view{background:#3498db}
+.approve{background:#27ae60}
+.reject{background:#e67e22}
+.delete{background:#c0392b}
+
+/* modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+}
+
+.modal-content {
+    margin: auto;
+    display: block;
+    max-width: 90%;
+    max-height: 90%;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h2>MILMICH FX Academy - Payment Proofs</h2>
+</header>
+
+<div class="container">
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Email</th>
+<th>Receipt</th>
+<th>Status</th>
+<th>Actions</th>
+</tr>
+</thead>
+
+<tbody id="tbody">
+<tr><td colspan="5">Loading...</td></tr>
+</tbody>
+</table>
+
+</div>
+
+<!-- MODAL -->
+<div id="imageModal" class="modal" onclick="closeModal()">
+    <img class="modal-content" id="modalImg">
+</div>
+
+<!-- =========================
+SCRIPTS START
+========================= -->
+
+<script>
+const token = localStorage.getItem("token");
+
+if (!token) {
+    window.location.href = "./admin-login.html";
+}
+
+// =========================
+// NOTIFICATION SYSTEM
+// =========================
+function notify(message) {
+    const div = document.createElement("div");
+
+    div.innerText = message;
+    div.style.position = "fixed";
+    div.style.top = "20px";
+    div.style.right = "20px";
+    div.style.background = "#13294b";
+    div.style.color = "#fff";
+    div.style.padding = "12px 18px";
+    div.style.borderRadius = "6px";
+    div.style.zIndex = "99999";
+    div.style.boxShadow = "0 5px 15px rgba(0,0,0,0.2)";
+    div.style.fontSize = "14px";
+
+    document.body.appendChild(div);
+
+    setTimeout(() => div.remove(), 3000);
+}
+
+// =========================
+// LOAD PAYMENTS
+// =========================
+async function loadPayments() {
+    try {
+        const res = await fetch("https://fx-academy-backend.onrender.com/api/payments", {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            notify(data.message || "Failed to load payments");
+            return;
+        }
+
+        renderPayments(data);
+
+    } catch (err) {
+        console.log(err);
+        notify("Server error");
+    }
+}
+
+// =========================
+// RENDER
+// =========================
+function renderPayments(payments) {
+    const tbody = document.getElementById("tbody");
+
+    if (!payments.length) {
+        tbody.innerHTML = `<tr><td colspan="5">No payments found</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = payments.map(p => `
+        <tr>
+            <td>${p.user?.name || "N/A"}</td>
+            <td>${p.user?.email || "N/A"}</td>
+            <td><button class="view" onclick="showPreview('${p.receipt}')">View</button></td>
+            <td>${p.status}</td>
+            <td>
+                <button class="approve" onclick="updateStatus('${p._id}', 'approved')">Approve</button>
+                <button class="reject" onclick="updateStatus('${p._id}', 'rejected')">Reject</button>
+                <button class="delete" onclick="deletePayment('${p._id}')">Delete</button>
+            </td>
+        </tr>
+    `).join("");
+}
+
+// =========================
+// IMAGE PREVIEW
+// =========================
+function showPreview(path) {
+    document.getElementById("imageModal").style.display = "block";
+    document.getElementById("modalImg").src = `https://fx-academy-backend.onrender.com/${path}`;
+}
+
+function closeModal() {
+    document.getElementById("imageModal").style.display = "none";
+}
+
+// =========================
+// UPDATE STATUS
+// =========================
+async function updateStatus(id, status) {
+    try {
+        const res = await fetch(`https://fx-academy-backend.onrender.com/api/payments/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({ status })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            notify(data.message);
+            return;
+        }
+
+        notify("Payment updated");
+        loadPayments();
+
+    } catch (err) {
+        notify("Error updating payment");
+    }
+}
+
+// =========================
+// DELETE PAYMENT
+// =========================
+async function deletePayment(id) {
+    if (!confirm("Delete this payment?")) return;
+
+    try {
+        const res = await fetch(`https://fx-academy-backend.onrender.com/api/payments/${id}`, {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${token}` }
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            notify(data.message);
+            return;
+        }
+
+        notify("Payment deleted");
+        loadPayments();
+
+    } catch (err) {
+        notify("Error deleting payment");
+    }
+}
+
+// =========================
+// SOCKET REALTIME
+// =========================
+</script>
+
+<script src="https://fx-academy-backend.onrender.com/socket.io/socket.io.js"></script>
+
+<script>
+const socket = io("https://fx-academy-backend.onrender.com");
+
+socket.on("dashboard-update", (data) => {
+    console.log("LIVE:", data);
+
+    notify(data.message);
+
+    loadPayments();
+});
+</script>
+
+<script>
+loadPayments();
+</script>
+
+</body>
+</html>

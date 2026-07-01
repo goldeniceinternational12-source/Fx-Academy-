@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Users Management</title>
+<style>
+body{margin:0;font-family:Arial;background:#f4f6f9}
+header{background:#13294b;color:#fff;padding:18px}
+.container{padding:20px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
+input{padding:10px;width:260px}
+table{width:100%;border-collapse:collapse;background:#fff}
+th,td{padding:12px;border:1px solid #ddd;text-align:left}
+th{background:#13294b;color:#fff}
+button{padding:8px 12px;border:none;border-radius:4px;color:#fff;cursor:pointer;margin-right:5px}
+.activate{background:#27ae60}
+.suspend{background:#e67e22}
+.delete{background:#c0392b}
+</style>
+</head>
+<body>
+<header><h2>MILMICH FX Academy - Users</h2></header>
+<div class="container">
+<div class="top">
+<h3>Registered Users</h3>
+<input id="search" placeholder="Search by name or email">
+</div>
+
+<table>
+<thead>
+<tr><th>Name</th><th>Email</th><th>Status</th><th>Actions</th></tr>
+</thead>
+<tbody id="userTable">
+<tr>
+<td>Loading...</td>
+<td>user@example.com</td>
+<td>Active</td>
+<td>
+<button class="suspend" onclick="alert('Connect suspend API later')">Suspend</button>
+<button class="activate" onclick="alert('Connect activate API later')">Activate</button>
+<button class="delete" onclick="alert('Connect delete API later')">Delete</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<script>
+const token = localStorage.getItem("token");
+
+// 🔐 Protect page
+if (!token) {
+    window.location.href = "admin-login.html";
+}
+
+async function getUsers() {
+    try {
+        const res = await fetch("https://fx-academy-backend.onrender.com", {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        // 🚨 handle unauthorized
+        if (res.status === 401) {
+            localStorage.removeItem("token");
+            window.location.href = "admin-login.html";
+            return;
+        }
+
+        const data = await res.json();
+
+        console.log("Users response:", data);
+
+        if (!Array.isArray(data)) {
+            document.getElementById("userTable").innerHTML = `
+                <tr>
+                    <td colspan="4">${data.message || "Error loading users"}</td>
+                </tr>
+            `;
+            return;
+        }
+
+        renderUsers(data);
+
+    } catch (error) {
+        console.log("Error fetching users:", error);
+
+        document.getElementById("userTable").innerHTML = `
+            <tr>
+                <td colspan="4">Server error</td>
+            </tr>
+        `;
+    }
+}
+
+function renderUsers(users) {
+    const table = document.getElementById("userTable");
+
+    table.innerHTML = users.map(user => `
+        <tr>
+            <td>${user.name}</td>
+            <td>${user.email}</td>
+            <td>${user.status || user.role}</td>
+            <td>
+                <button class="suspend">Suspend</button>
+                <button class="activate">Activate</button>
+                <button class="delete">Delete</button>
+            </td>
+        </tr>
+    `).join("");
+}
+
+getUsers();
+</script>
+<script src="./js/app.js"></script>
+</body>
+</html>
