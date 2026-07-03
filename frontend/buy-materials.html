@@ -90,46 +90,55 @@
   </div>
 
   <script>
-    async function submitRequest() {
-      const name = document.getElementById("name").value;
-      const email = document.getElementById("email").value;
-      const request = document.getElementById("request").value;
-      const message = document.getElementById("message");
+   async function submitRequest() {
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const request = document.getElementById("request").value;
+  const message = document.getElementById("message");
 
-      if (!name || !email || !request) {
-        message.textContent = "All fields are required!";
-        message.className = "message error";
-        return;
-      }
+  if (!name || !email || !request) {
+    message.textContent = "All fields are required!";
+    message.className = "message error";
+    return;
+  }
 
-      try {
-        const res = await fetch("https://fx-academy-backend.onrender.com/api/materials", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ name, email, request })
-        });
+  try {
+    // 🔐 Get token from login
+    const token = localStorage.getItem("token");
 
-        const data = await res.json();
+    const res = await fetch("https://fx-academy-backend.onrender.com/api/materials", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        material: request,   // IMPORTANT FIX (backend expects "material")
+        message: request
+      })
+    });
 
-        if (res.ok) {
-          message.textContent = "Request sent successfully!";
-          message.className = "message success";
+    const data = await res.json();
 
-          document.getElementById("name").value = "";
-          document.getElementById("email").value = "";
-          document.getElementById("request").value = "";
-        } else {
-          message.textContent = data.message || "Something went wrong!";
-          message.className = "message error";
-        }
+    if (res.ok) {
+      message.textContent = "Request sent successfully!";
+      message.className = "message success";
 
-      } catch (err) {
-        message.textContent = "Server error. Try again later.";
-        message.className = "message error";
-      }
+      document.getElementById("name").value = "";
+      document.getElementById("email").value = "";
+      document.getElementById("request").value = "";
+    } else {
+      message.textContent = data.message || "Something went wrong!";
+      message.className = "message error";
     }
+
+  } catch (err) {
+    message.textContent = "Server error. Try again later.";
+    message.className = "message error";
+  }
+}
   </script>
 
 </body>
