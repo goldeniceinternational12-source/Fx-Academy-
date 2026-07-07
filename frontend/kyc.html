@@ -816,6 +816,35 @@
             0%, 100% { opacity: 1; }
             50% { opacity: 0.3; }
         }
+        .submit-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    padding: 12px 25px;
+    border-radius: 8px;
+
+    background: #111827;
+    color: white;
+
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.3s ease;
+}
+
+.submit-btn:hover {
+    opacity: 0.85;
+    transform: translateY(-2px);
+}
+
+.submit-btn i {
+    font-size: 18px;
+}
     </style>
 </head>
 <body>
@@ -1055,7 +1084,12 @@
 
                     <div class="btn-group">
                         <button type="button" class="btn btn-secondary" onclick="prevStep(3)">← Back</button>
-                        <button type="button" class="btn btn-primary" onclick="submitForm()">Submit Application</button>
+                        <a 
+  href="mailto:milmich2325@gmail.com?subject=Payment Proof Submission" 
+  class="submit-btn"
+>
+    <i class="fas fa-paper-plane"></i> Submit Payment Proof
+</a>
                     </div>
                 </div>
 

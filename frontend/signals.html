@@ -1007,6 +1007,35 @@
         ::-webkit-scrollbar-thumb:hover {
             background: var(--accent);
         }
+        .submit-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    padding: 12px 25px;
+    border-radius: 8px;
+
+    background: #111827;
+    color: white;
+
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.3s ease;
+}
+
+.submit-btn:hover {
+    opacity: 0.85;
+    transform: translateY(-2px);
+}
+
+.submit-btn i {
+    font-size: 18px;
+}
     </style>
 </head>
 <body>
@@ -1243,9 +1272,12 @@
                         <textarea placeholder="Any extra information..."></textarea>
                     </div>
                     
-                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
-                        <i class="fas fa-paper-plane"></i> Submit Payment Proof
-                    </button>
+                   <a 
+  href="mailto:milmich2325@gmail.com?subject=Payment Proof Submission" 
+  class="submit-btn"
+>
+    <i class="fas fa-paper-plane"></i> Submit Payment Proof
+</a>
                 </form>
             </div>
         </div>

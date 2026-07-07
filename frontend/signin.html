@@ -647,17 +647,21 @@
             <!-- Step 3: Enter 5-Letter Code -->
             <div class="step-content" id="step3">
                 <h2 class="step-title">Enter Code</h2>
-                <p class="step-desc">Enter the 5-letter code sent to your selected method</p>
+                <p class="step-desc">Enter the 6-letter code sent to your selected method</p>
 
                 <div class="code-inputs">
-                    <input type="text" class="code-box" maxlength="1" data-index="0">
-                    <input type="text" class="code-box" maxlength="1" data-index="1">
-                    <input type="text" class="code-box" maxlength="1" data-index="2">
-                    <input type="text" class="code-box" maxlength="1" data-index="3">
-                    <input type="text" class="code-box" maxlength="1" data-index="4">
-                </div>
+<input class="code-box" maxlength="1">
+<input class="code-box" maxlength="1">
+<input class="code-box" maxlength="1">
+<input class="code-box" maxlength="1">
+<input class="code-box" maxlength="1">
+<input class="code-box" maxlength="1">
+</div>
+                
 
-                <button class="btn" id="btnStep3" onclick="goToStep(4)">Continue</button>
+                <button class="btn" id="btnStep3" onclick="verifyOTP()">
+Continue
+</button>
                 <button class="btn btn-secondary" onclick="goToStep(2)">Back</button>
                 <p style="text-align: center; margin-top: 16px; font-size: 13px; color: var(--text-secondary);">
                     Didn't receive it? <a href="#" style="color: var(--gold); text-decoration: none;" onclick="resendCode(event)">Resend Code</a>
@@ -948,51 +952,224 @@
         // Initialize
         generateBackground();
         document.getElementById('btnStep3').disabled = true;
-   async function loginUser() {
-    const email = document.getElementById("emailInput").value.trim();
-    const password = document.getElementById("passwordInput").value.trim();
+  // ===============================
+// LOGIN USER - SEND OTP
+// ===============================
+async function loginUser() {
+
+    const email = document
+        .getElementById("emailInput")
+        .value
+        .trim();
+
+    const password = document
+        .getElementById("passwordInput")
+        .value
+        .trim();
+
 
     if (!email || !password) {
+
         alert("Please enter email and password");
         return;
+
     }
+
 
     try {
-        const res = await fetch("https://fx-academy-backend-v2.onrender.com/api/auth/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ email, password })
-        });
 
-        const data = await res.json();
+        const response = await fetch(
+            "https://fx-academy-backend-v2.onrender.com/api/auth/login",
+            {
+                method: "POST",
 
-        console.log("Login response:", data);
+                headers: {
+                    "Content-Type": "application/json"
+                },
 
-        if (!res.ok) {
+                body: JSON.stringify({
+                    email,
+                    password
+                })
+            }
+        );
+
+
+        const data = await response.json();
+
+
+        console.log("LOGIN RESPONSE:", data);
+
+
+
+        if (!response.ok) {
+
             alert(data.message || "Login failed");
             return;
+
         }
 
-        if (!data.token) {
-            alert("No token received from server");
-            return;
-        }
 
-        // ✅ SAVE TOKEN (this is what your user.js uses)
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
 
-        alert("Login successful!");
+        // Save email for OTP verification
+        localStorage.setItem(
+            "otpEmail",
+            data.email
+        );
 
-        // go to next step in your UI (NOT dashboard yet)
-        goToStep(2);
 
-    } catch (err) {
-        console.error(err);
+        // Display email on OTP page
+        document.getElementById("emailDisplay").textContent =
+            data.email;
+
+
+
+        alert("OTP has been sent to your email");
+
+
+        // Move to OTP step
+        goToStep(3);
+
+
+
+    } catch (error) {
+
+        console.error("LOGIN ERROR:", error);
+
         alert("Server error. Try again.");
+
     }
+
+}
+
+
+
+// ===============================
+// VERIFY OTP
+// ===============================
+async function verifyOTP() {
+
+
+    let otp = "";
+
+
+    document
+    .querySelectorAll(".code-box")
+    .forEach(box => {
+
+        otp += box.value;
+
+    });
+
+
+
+    if (otp.length !== 6) {
+
+        alert("Please enter the complete 6 digit OTP");
+        return;
+
+    }
+
+
+
+    const email = localStorage.getItem("otpEmail");
+
+
+
+    if (!email) {
+
+        alert("Email session expired. Login again.");
+        goToStep(1);
+        return;
+
+    }
+
+
+
+    try {
+
+
+        const response = await fetch(
+
+            "https://fx-academy-backend-v2.onrender.com/api/auth/verify-otp",
+
+            {
+
+                method: "POST",
+
+                headers: {
+
+                    "Content-Type": "application/json"
+
+                },
+
+                body: JSON.stringify({
+
+                    email,
+
+                    otp
+
+                })
+
+            }
+
+        );
+
+
+
+        const data = await response.json();
+
+
+
+        console.log("OTP RESPONSE:", data);
+
+
+
+        if (!response.ok) {
+
+            alert(data.message || "Invalid OTP");
+            return;
+
+        }
+
+
+
+
+        // Save login details
+
+        localStorage.setItem(
+            "token",
+            data.token
+        );
+
+
+        localStorage.setItem(
+            "user",
+            JSON.stringify(data.user)
+        );
+
+
+
+        alert("Login successful");
+
+
+
+        // Continue to dashboard selection
+
+        goToStep(4);
+
+
+
+    } catch(error) {
+
+
+        console.error("OTP ERROR:", error);
+
+        alert("OTP verification failed");
+
+
+    }
+
 }
     </script>
 </body>
