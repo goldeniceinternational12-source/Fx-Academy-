@@ -640,14 +640,16 @@
                     </div>
                 </div>
 
-                <button class="btn" id="btnStep2" onclick="goToStep(3)" disabled>Continue</button>
+               <button class="btn" id="btnStep2" onclick="sendOTP()" disabled>
+    Continue
+</button>
                 <button class="btn btn-secondary" onclick="goToStep(1)">Back</button>
             </div>
 
             <!-- Step 3: Enter 5-Letter Code -->
             <div class="step-content" id="step3">
                 <h2 class="step-title">Enter Code</h2>
-                <p class="step-desc">Enter the 6-letter code sent to your selected method</p>
+                <p class="step-desc">Enter the 6-digit code sent to your selected method</p>
 
                 <div class="code-inputs">
 <input class="code-box" maxlength="1">
@@ -723,454 +725,502 @@ Continue
         </div>
     </div>
 
-    <script>
-        // State management
-        let currentStep = 1;
-        let selectedDelivery = null;
-        let selectedPurpose = null;
-        let userEmail = '';
+   <script>
+    // =====================================
+// CONFIG
+// =====================================
 
-        // Generate background candlesticks
-        function generateBackground() {
-            const container = document.getElementById('bgCharts');
-            const colors = ['var(--success)', '#ef4444'];
-            
-            for (let i = 0; i < 30; i++) {
-                const candle = document.createElement('div');
-                candle.className = 'candlestick';
-                if (Math.random() > 0.5) candle.classList.add('red');
-                
-                const height = Math.random() * 60 + 20;
-                const left = Math.random() * 95;
-                const top = Math.random() * 80 + 10;
-                
-                candle.style.height = height + 'px';
-                candle.style.left = left + '%';
-                candle.style.top = top + '%';
-                candle.style.animationDelay = (Math.random() * 5) + 's';
-                
-                container.appendChild(candle);
-            }
+const API_URL = "https://fx-academy-backend-v2.onrender.com/api/auth";
 
-            // Add chart lines
-            for (let i = 0; i < 5; i++) {
-                const line = document.createElement('div');
-                line.className = 'chart-line';
-                line.style.top = (20 + i * 15) + '%';
-                line.style.animationDelay = (i * 2) + 's';
-                container.appendChild(line);
-            }
-        }
+// =====================================
+// STATE
+// =====================================
 
-        // Step navigation
-        function goToStep(step) {
-            // Validation before proceeding
-            if (step === 2) {
-                const email = document.getElementById('emailInput').value.trim();
-                if (!email || !email.includes('@')) {
-                    shakeElement(document.getElementById('emailInput'));
-                    return;
-                }
-                userEmail = email;
-                document.getElementById('emailDisplay').textContent = email;
-            }
+let currentStep = 1;
+let selectedDelivery = "";
+let selectedPurpose = "";
 
-            if (step === 3 && !selectedDelivery) {
-                return;
-            }
+const emailInput = document.getElementById("emailInput");
+const passwordInput = document.getElementById("passwordInput");
+const emailDisplay = document.getElementById("emailDisplay");
 
-            if (step === 4) {
-                const codeBoxes = document.querySelectorAll('.code-box');
-                let code = '';
-                codeBoxes.forEach(box => code += box.value);
-                if (code.length !== 5) {
-                    codeBoxes.forEach(box => {
-                        if (!box.value) shakeElement(box);
-                    });
-                    return;
-                }
-            }
+// =====================================
+// BACKGROUND ANIMATION
+// =====================================
 
-            // Hide all steps
-            document.querySelectorAll('.step-content').forEach(el => {
-                el.classList.remove('active');
-            });
+generateBackground();
 
-            // Update dots
-            document.querySelectorAll('.step-dot').forEach((dot, index) => {
-                dot.classList.remove('active', 'completed');
-                if (index + 1 < step) dot.classList.add('completed');
-                if (index + 1 === step) dot.classList.add('active');
-            });
+function generateBackground() {
 
-            // Show target step
-            if (step <= 4) {
-                document.getElementById('step' + step).classList.add('active');
-                currentStep = step;
-            }
+    const container = document.getElementById("bgCharts");
 
-            // Auto-focus logic
-            if (step === 3) {
-                setTimeout(() => {
-                    document.querySelector('.code-box[data-index="0"]').focus();
-                }, 300);
-            }
-        }
+    if (!container) return;
 
-        // Delivery selection
-        function selectDelivery(element, method) {
-            document.querySelectorAll('.option-card').forEach(card => {
-                card.classList.remove('selected');
-            });
-            element.classList.add('selected');
-            selectedDelivery = method;
-            document.getElementById('btnStep2').disabled = false;
-        }
+    for (let i = 0; i < 30; i++) {
 
-        // Purpose selection
-        function selectPurpose(element, purpose) {
-            document.querySelectorAll('.purpose-card').forEach(card => {
-                card.classList.remove('selected');
-            });
-            element.classList.add('selected');
-            selectedPurpose = purpose;
-            document.getElementById('btnStep4').disabled = false;
-        }
+        const candle = document.createElement("div");
 
-        // Code input handling
-        const codeBoxes = document.querySelectorAll('.code-box');
-        codeBoxes.forEach((box, index) => {
-            box.addEventListener('input', function(e) {
-                this.value = this.value.toUpperCase();
-                if (this.value.length === 1 && index < 4) {
-                    codeBoxes[index + 1].focus();
-                }
-                checkCodeComplete();
-            });
+        candle.className = "candlestick";
 
-            box.addEventListener('keydown', function(e) {
-                if (e.key === 'Backspace' && this.value.length === 0 && index > 0) {
-                    codeBoxes[index - 1].focus();
-                }
-                if (e.key === 'ArrowLeft' && index > 0) {
-                    codeBoxes[index - 1].focus();
-                }
-                if (e.key === 'ArrowRight' && index < 4) {
-                    codeBoxes[index + 1].focus();
-                }
-            });
+        if (Math.random() > 0.5)
+            candle.classList.add("red");
 
-            box.addEventListener('paste', function(e) {
-                e.preventDefault();
-                const paste = (e.clipboardData || window.clipboardData).getData('text');
-                const chars = paste.toUpperCase().split('').slice(0, 5);
-                chars.forEach((char, i) => {
-                    if (codeBoxes[i]) codeBoxes[i].value = char;
-                });
-                if (codeBoxes[chars.length]) {
-                    codeBoxes[chars.length].focus();
-                } else {
-                    codeBoxes[4].focus();
-                }
-                checkCodeComplete();
-            });
-        });
+        candle.style.height = (Math.random() * 60 + 20) + "px";
+        candle.style.left = (Math.random() * 95) + "%";
+        candle.style.top = (Math.random() * 80 + 10) + "%";
+        candle.style.animationDelay = (Math.random() * 5) + "s";
 
-        function checkCodeComplete() {
-            let complete = true;
-            codeBoxes.forEach(box => {
-                if (!box.value) complete = false;
-            });
-            document.getElementById('btnStep3').disabled = !complete;
-        }
-
-        // Resend code
-        function resendCode(e) {
-            e.preventDefault();
-            const link = e.target;
-            const originalText = link.textContent;
-            link.textContent = 'Code resent!';
-            link.style.color = 'var(--success)';
-            setTimeout(() => {
-                link.textContent = originalText;
-                link.style.color = 'var(--gold)';
-            }, 2000);
-        }
-
-        // Complete sign in
-        function completeSignIn() {
-            const purposes = {
-                'materials': 'Buying Materials',
-                'signals': 'Getting Signals',
-                'training': 'Training',
-                'mentorship': 'Mentorship'
-            };
-
-            document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.step-dot').forEach(dot => dot.classList.add('completed'));
-            document.getElementById('stepSuccess').classList.add('active');
-            
-            document.getElementById('successMessage').textContent = 
-                `You've selected ${purposes[selectedPurpose]}. Redirecting to your dashboard...`;
-
-            // Simulate redirect
-            setTimeout(() => {
-                // In real app: window.location.href = '/dashboard';
-                console.log('Redirecting...');
-            }, 3000);
-        }
-
-        // Utility: Shake animation for errors
-        function shakeElement(element) {
-            element.style.animation = 'none';
-            element.style.borderColor = '#ef4444';
-            setTimeout(() => {
-                element.style.animation = 'shake 0.5s ease-in-out';
-            }, 10);
-            setTimeout(() => {
-                element.style.borderColor = '';
-                element.style.animation = '';
-            }, 1000);
-        }
-
-        // Add shake keyframes dynamically
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes shake {
-                0%, 100% { transform: translateX(0); }
-                25% { transform: translateX(-10px); }
-                75% { transform: translateX(10px); }
-            }
-        `;
-        document.head.appendChild(style);
-
-        // Email input enter key support
-        document.getElementById('emailInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') goToStep(2);
-        });
-
-        // Initialize
-        generateBackground();
-        document.getElementById('btnStep3').disabled = true;
-  // ===============================
-// LOGIN USER - SEND OTP
-// ===============================
-async function loginUser() {
-
-    const email = document
-        .getElementById("emailInput")
-        .value
-        .trim();
-
-    const password = document
-        .getElementById("passwordInput")
-        .value
-        .trim();
-
-
-    if (!email || !password) {
-
-        alert("Please enter email and password");
-        return;
+        container.appendChild(candle);
 
     }
 
+    for (let i = 0; i < 5; i++) {
 
-    try {
+        const line = document.createElement("div");
 
-        const response = await fetch(
-            "https://fx-academy-backend-v2.onrender.com/api/auth/login",
-            {
-                method: "POST",
+        line.className = "chart-line";
 
-                headers: {
-                    "Content-Type": "application/json"
-                },
+        line.style.top = (20 + i * 15) + "%";
 
-                body: JSON.stringify({
-                    email,
-                    password
-                })
-            }
-        );
+        line.style.animationDelay = (i * 2) + "s";
 
-
-        const data = await response.json();
-
-
-        console.log("LOGIN RESPONSE:", data);
-
-
-
-        if (!response.ok) {
-
-            alert(data.message || "Login failed");
-            return;
-
-        }
-
-
-
-        // Save email for OTP verification
-        localStorage.setItem(
-            "otpEmail",
-            data.email
-        );
-
-
-        // Display email on OTP page
-        document.getElementById("emailDisplay").textContent =
-            data.email;
-
-
-
-        alert("OTP has been sent to your email");
-
-
-        // Move to OTP step
-        goToStep(3);
-
-
-
-    } catch (error) {
-
-        console.error("LOGIN ERROR:", error);
-
-        alert("Server error. Try again.");
+        container.appendChild(line);
 
     }
 
 }
 
+// =====================================
+// STEP NAVIGATION
+// =====================================
 
+function goToStep(step) {
 
-// ===============================
+    document
+        .querySelectorAll(".step-content")
+        .forEach(card => card.classList.remove("active"));
+
+    document
+        .querySelector("#step" + step)
+        .classList.add("active");
+
+    document
+        .querySelectorAll(".step-dot")
+        .forEach((dot, index) => {
+
+            dot.classList.remove("active");
+            dot.classList.remove("completed");
+
+            if (index + 1 < step)
+                dot.classList.add("completed");
+
+            if (index + 1 === step)
+                dot.classList.add("active");
+
+        });
+
+    currentStep = step;
+
+}
+
+// =====================================
+// DELIVERY METHOD
+// =====================================
+
+function selectDelivery(card, method) {
+
+    document
+        .querySelectorAll(".option-card")
+        .forEach(c => c.classList.remove("selected"));
+
+    card.classList.add("selected");
+
+    selectedDelivery = method;
+
+    document
+        .getElementById("btnStep2")
+        .disabled = false;
+
+}
+
+// =====================================
+// PURPOSE
+// =====================================
+
+function selectPurpose(card, purpose) {
+
+    document
+        .querySelectorAll(".purpose-card")
+        .forEach(c => c.classList.remove("selected"));
+
+    card.classList.add("selected");
+
+    selectedPurpose = purpose;
+
+}
+
+// =====================================
+// SHAKE
+// =====================================
+
+function shakeElement(element){
+
+    element.style.animation="none";
+
+    setTimeout(()=>{
+
+        element.style.animation="shake .4s";
+
+    },10);
+
+}
+
+// =====================================
+// OTP INPUT
+// =====================================
+
+const codeBoxes =
+document.querySelectorAll(".code-box");
+
+codeBoxes.forEach((box,index)=>{
+
+box.addEventListener("input",()=>{
+
+box.value=box.value.replace(/[^0-9]/g,"");
+
+if(box.value && index<5){
+
+codeBoxes[index+1].focus();
+
+}
+
+checkOTP();
+
+});
+
+box.addEventListener("keydown",(e)=>{
+
+if(e.key==="Backspace" && !box.value && index>0){
+
+codeBoxes[index-1].focus();
+
+}
+
+});
+
+});
+
+// =====================================
+// OTP COMPLETE
+// =====================================
+
+function checkOTP(){
+
+let complete=true;
+
+codeBoxes.forEach(box=>{
+
+if(box.value==="")
+
+complete=false;
+
+});
+
+document
+.getElementById("btnStep3")
+.disabled=!complete;
+
+}
+// =====================================
+// LOGIN USER
+// STEP 1
+// =====================================
+
+async function loginUser() {
+
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+
+    if (!email || !password) {
+
+        alert("Please enter your email and password.");
+
+        return;
+
+    }
+
+    try {
+
+        document.getElementById("btnStep1").disabled = true;
+        document.getElementById("btnStep1").innerText = "Please wait...";
+
+        const response = await fetch(`${API_URL}/login`, {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                email,
+                password
+            })
+
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+
+            alert(data.message || "Login failed");
+
+            document.getElementById("btnStep1").disabled = false;
+            document.getElementById("btnStep1").innerText = "Continue";
+
+            return;
+
+        }
+
+        localStorage.setItem("otpEmail", data.email);
+
+        if (data.phone) {
+
+            localStorage.setItem("otpPhone", data.phone);
+
+        }
+
+        emailDisplay.innerText = data.email;
+
+        document.getElementById("btnStep1").disabled = false;
+        document.getElementById("btnStep1").innerText = "Continue";
+
+        goToStep(2);
+
+    }
+
+    catch (err) {
+
+        console.error(err);
+
+        alert("Unable to connect to the server.");
+
+        document.getElementById("btnStep1").disabled = false;
+        document.getElementById("btnStep1").innerText = "Continue";
+
+    }
+
+}
+
+// =====================================
+// SEND OTP
+// STEP 2
+// =====================================
+
+async function sendOTP() {
+
+    if (!selectedDelivery) {
+
+        alert("Please select Email, SMS or WhatsApp.");
+
+        return;
+
+    }
+
+    try {
+
+        document.getElementById("btnStep2").disabled = true;
+        document.getElementById("btnStep2").innerText = "Sending...";
+
+        const response = await fetch(`${API_URL}/send-otp`, {
+
+            method: "POST",
+
+            headers: {
+
+                "Content-Type": "application/json"
+
+            },
+
+            body: JSON.stringify({
+
+                email: localStorage.getItem("otpEmail"),
+
+                method: selectedDelivery
+
+            })
+
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+
+            alert(data.message || "Failed to send OTP.");
+
+            document.getElementById("btnStep2").disabled = false;
+            document.getElementById("btnStep2").innerText = "Continue";
+
+            return;
+
+        }
+
+        alert(data.message);
+
+        document.getElementById("btnStep2").disabled = false;
+        document.getElementById("btnStep2").innerText = "Continue";
+
+        goToStep(3);
+
+    }
+
+    catch (err) {
+
+        console.error(err);
+
+        alert("Unable to send OTP.");
+
+        document.getElementById("btnStep2").disabled = false;
+        document.getElementById("btnStep2").innerText = "Continue";
+
+    }
+
+}
+
+// =====================================
+// RESEND OTP
+// =====================================
+
+async function resendCode(e) {
+
+    e.preventDefault();
+
+    await sendOTP();
+
+}
+// =====================================
 // VERIFY OTP
-// ===============================
-async function verifyOTP() {
+// STEP 3
+// =====================================
 
+async function verifyOTP() {
 
     let otp = "";
 
-
-    document
-    .querySelectorAll(".code-box")
-    .forEach(box => {
+    codeBoxes.forEach(box => {
 
         otp += box.value;
 
     });
 
-
-
     if (otp.length !== 6) {
 
-        alert("Please enter the complete 6 digit OTP");
+        alert("Please enter the 6-digit OTP.");
+
         return;
 
     }
-
-
-
-    const email = localStorage.getItem("otpEmail");
-
-
-
-    if (!email) {
-
-        alert("Email session expired. Login again.");
-        goToStep(1);
-        return;
-
-    }
-
-
 
     try {
 
+        document.getElementById("btnStep3").disabled = true;
+        document.getElementById("btnStep3").innerText = "Verifying...";
 
-        const response = await fetch(
+        const response = await fetch(`${API_URL}/verify-otp`, {
 
-            "https://fx-academy-backend-v2.onrender.com/api/auth/verify-otp",
+            method: "POST",
 
-            {
+            headers: {
+                "Content-Type": "application/json"
+            },
 
-                method: "POST",
+            body: JSON.stringify({
 
-                headers: {
+                email: localStorage.getItem("otpEmail"),
 
-                    "Content-Type": "application/json"
+                otp
 
-                },
+            })
 
-                body: JSON.stringify({
-
-                    email,
-
-                    otp
-
-                })
-
-            }
-
-        );
-
-
+        });
 
         const data = await response.json();
 
-
-
-        console.log("OTP RESPONSE:", data);
-
-
-
         if (!response.ok) {
 
-            alert(data.message || "Invalid OTP");
+            alert(data.message || "Invalid OTP.");
+
+            document.getElementById("btnStep3").disabled = false;
+            document.getElementById("btnStep3").innerText = "Continue";
+
             return;
 
         }
 
-
-
-
-        // Save login details
+        localStorage.setItem("token", data.token);
 
         localStorage.setItem(
-            "token",
-            data.token
-        );
 
-
-        localStorage.setItem(
             "user",
+
             JSON.stringify(data.user)
+
         );
 
-
-
-        alert("Login successful");
-
-
-
-        // Continue to dashboard selection
+        document.getElementById("btnStep3").disabled = false;
+        document.getElementById("btnStep3").innerText = "Continue";
 
         goToStep(4);
 
+    }
 
+    catch (err) {
 
-    } catch(error) {
+        console.error(err);
 
+        alert("OTP verification failed.");
 
-        console.error("OTP ERROR:", error);
-
-        alert("OTP verification failed");
-
+        document.getElementById("btnStep3").disabled = false;
+        document.getElementById("btnStep3").innerText = "Continue";
 
     }
 
 }
-    </script>
+
+// =====================================
+// ENTER KEY SUPPORT
+// =====================================
+
+emailInput.addEventListener("keypress", function(e){
+
+    if(e.key==="Enter"){
+
+        loginUser();
+
+    }
+
+});
+
+passwordInput.addEventListener("keypress", function(e){
+
+    if(e.key==="Enter"){
+
+        loginUser();
+
+    }
+
+});
+
+// =====================================
+// INITIALIZE
+// =====================================
+
+document.getElementById("btnStep2").disabled = true;
+document.getElementById("btnStep3").disabled = true;
+
+goToStep(1);
+
+console.log("✅ MILMICH FX Academy Login Loaded");
+   </script>
 </body>
 </html>
