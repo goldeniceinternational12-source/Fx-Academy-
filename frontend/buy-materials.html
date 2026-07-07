@@ -90,7 +90,7 @@
   </div>
 
   <script>
-   async function submitRequest() {
+async function submitRequest() {
   const name = document.getElementById("name").value;
   const email = document.getElementById("email").value;
   const request = document.getElementById("request").value;
@@ -103,10 +103,20 @@
   }
 
   try {
-    // 🔐 Get token from login
+    // Get token from localStorage
     const token = localStorage.getItem("token");
 
-    const res = await fetch("https://fx-academy-backend.onrender.com/api/materials", {
+    // Debugging
+    console.log("Stored token:", token);
+
+    if (!token) {
+      alert("No login token found. Please log in again.");
+      return;
+    }
+
+    console.log("Authorization header:", `Bearer ${token}`);
+
+    const res = await fetch("https://fx-academy-backend-v2.onrender.com/api/materials", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -115,12 +125,14 @@
       body: JSON.stringify({
         name,
         email,
-        material: request,   // IMPORTANT FIX (backend expects "material")
+        material: request,
         message: request
       })
     });
 
     const data = await res.json();
+
+    console.log("Server response:", data);
 
     if (res.ok) {
       message.textContent = "Request sent successfully!";
@@ -135,6 +147,8 @@
     }
 
   } catch (err) {
+    console.error("Request Error:", err);
+
     message.textContent = "Server error. Try again later.";
     message.className = "message error";
   }
