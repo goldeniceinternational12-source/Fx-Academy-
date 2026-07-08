@@ -1,4 +1,4 @@
-const API = "https://fx-academy-backend-v2.onrender.com";
+const API = "https://fx-academy-backend.onrender.com";
 
 const token = localStorage.getItem("token");
 

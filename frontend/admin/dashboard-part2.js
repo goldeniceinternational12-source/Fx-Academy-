@@ -36,7 +36,7 @@ if (logoutBtn) {
 // ==============================
 // SOCKET (OPTIMIZED)
 // ==============================
-const socket = io("https://fx-academy-backend-v2.onrender.com");
+const socket = io("https://fx-academy-backend.onrender.com");
 
 let refreshCooldown = false;
 

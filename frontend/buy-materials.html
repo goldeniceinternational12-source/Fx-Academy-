@@ -116,7 +116,7 @@ async function submitRequest() {
 
     console.log("Authorization header:", `Bearer ${token}`);
 
-    const res = await fetch("https://fx-academy-backend-v2.onrender.com/api/materials", {
+    const res = await fetch("https://fx-academy-backend.onrender.com/api/materials", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

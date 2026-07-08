@@ -97,7 +97,7 @@ async function loadDashboard() {
 
         setLoading(true);
 
-        const res = await fetch("https://fx-academy-backend-v2.onrender.com", {
+        const res = await fetch("https://fx-academy-backend.onrender.com", {
             headers: {
                 Authorization: `Bearer ${token}`
             }

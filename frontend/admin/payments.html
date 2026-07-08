@@ -111,7 +111,7 @@ function notify(message) {
 // =========================
 async function loadPayments() {
     try {
-        const res = await fetch("https://fx-academy-backend-v2.onrender.com/api/payments", {
+        const res = await fetch("https://fx-academy-backend.onrender.com/api/payments", {
             headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -161,7 +161,7 @@ function renderPayments(payments) {
 // =========================
 function showPreview(path) {
     document.getElementById("imageModal").style.display = "block";
-    document.getElementById("modalImg").src = `https://fx-academy-backend-v2.onrender.com/${path}`;
+    document.getElementById("modalImg").src = `https://fx-academy-backend.onrender.com/${path}`;
 }
 
 function closeModal() {
@@ -173,7 +173,7 @@ function closeModal() {
 // =========================
 async function updateStatus(id, status) {
     try {
-        const res = await fetch(`https://fx-academy-backend-v2.onrender.com/api/payments/${id}`, {
+        const res = await fetch(`https://fx-academy-backend.onrender.com/api/payments/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -204,7 +204,7 @@ async function deletePayment(id) {
     if (!confirm("Delete this payment?")) return;
 
     try {
-        const res = await fetch(`https://fx-academy-backend-v2.onrender.com/api/payments/${id}`, {
+        const res = await fetch(`https://fx-academy-backend.onrender.com/api/payments/${id}`, {
             method: "DELETE",
             headers: { Authorization: `Bearer ${token}` }
         });
@@ -229,10 +229,10 @@ async function deletePayment(id) {
 // =========================
 </script>
 
-<script src="https://fx-academy-backend-v2.onrender.com/socket.io/socket.io.js"></script>
+<script src="https://fx-academy-backend.onrender.com/socket.io/socket.io.js"></script>
 
 <script>
-const socket = io("https://fx-academy-backend-v2.onrender.com");
+const socket = io("https://fx-academy-backend.onrender.com");
 
 socket.on("dashboard-update", (data) => {
     console.log("LIVE:", data);
